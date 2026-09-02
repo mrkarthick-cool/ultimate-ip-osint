@@ -43,7 +43,12 @@ try{
   ]);
   let html='<div class=box>🎯 TARGET: '+(ipRes.target||v)+' | <span class="badge ok">'+(ipRes.loc||'N/A')+'</span><br>📍 <b>Location:</b> '+(ipRes.location||'N/A')+'<br>🏢 <b>ISP:</b> '+(ipRes.isp||'N/A')+'<br>🌐 <b>IP:</b> '+(ipRes.ip||'N/A')+'</div>';
   html+='<div class=box>🔗 <b>Original:</b> '+(preRes.original||v)+'<br>➡️ <b>Final URL:</b> '+(preRes.finalUrl||'N/A')+'<br>🔒 <b>SSL:</b> '+(preRes.ssl?'<span class="badge ok">HTTPS OK</span>':'<span class="badge bad">NO SSL</span>')+'<br>🛡️ <b>Malware:</b> '+(preRes.malwareSuspect?'<span class=badge bad>SUSPECT ⚠️</span>':'<span class=badge ok>Clean</span>')+'<br><br><b>Headers:</b><br>'+JSON.stringify(preRes.headers||{},null,2).substring(0,800)+'</div>';
-  html+='<div class=box>👁️ HTML Preview (Safe Sandbox):<br><iframe sandbox="allow-scripts" srcdoc="'+(preRes.htmlPreview||'').replace(/"/g,'&quot;')+'"></iframe></div>';
+  const safeHtml = (preRes.htmlPreview||'').substring(0,30000);
+html+=`<div class=box>👁️ <b>HTML Preview:</b>
+<div style="background:#fff;color:#000;border-radius:8px;padding:10px;max-height:500px;overflow:auto;margin-top:8px">${safeHtml.replace(/</g,'&lt;').substring(0,5000)}</div>
+<br><b>Open Live:</b> <a href="${preRes.finalUrl}" target="_blank" style="color:#00d4ff">${preRes.finalUrl}</a>
+<br><br><button onclick="window.open('${preRes.finalUrl}','_blank')" style="background:#fff;color:#000">🔗 Open Site in New Tab</button>
+</div>`;
   o.innerHTML=html;
 }catch(e){o.innerHTML='<div class=box>❌ '+e.message+'</div>'}
 }
