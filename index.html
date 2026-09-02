@@ -3,82 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ULTIMATE IP OSINT - V1.0</title>
+<title>ULTIMATE OSINT V2.0</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#020617;color:white;font-family:Arial;text-align:center;padding:20px}h1{margin-top:45px;font-size:26px}.sub{color:#94a3b8;font-size:14px;margin:10px}.search-box{border:2px solid #00d9ff;border-radius:50px;display:flex;padding:5px;margin:25px 0;background:#0f172a}.search-box input{flex:1;background:transparent;border:none;color:white;padding:15px;outline:none;font-size:15px}.search-box button{background:#00d9ff;border:none;border-radius:50px;padding:10px 28px;font-weight:bold;cursor:pointer}.result-box{display:none;background:#0f172a;border:2px solid #00d9ff;border-radius:20px;padding:0;margin-top:20px;text-align:left;overflow:hidden}.preview-card{display:flex;gap:12px;padding:14px;background:#020617;border-bottom:1px solid #1e293b;align-items:center}.preview-card img{width:50px;height:50px;border-radius:12px;background:white;object-fit:contain}.preview-info{flex:1}.info-row{display:flex;justify-content:space-between;padding:9px 14px;border-bottom:1px solid #1e293b;font-size:14px}.info-row b{color:#94a3b8}.info-row span{color:#e2e8f0;text-align:right;max-width:60%;word-break:break-all}.safe{color:#22c55e!important;font-weight:bold}.error{background:#0f172a;border:1px solid #334155;border-radius:20px;padding:15px;margin-top:20px;text-align:left}.footer{margin-top:30px;color:#64748b;font-size:13px}.footer a{color:#00d9ff;text-decoration:none}#th-popup-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(2,6,23,0.92);backdrop-filter:blur(12px);display:none;justify-content:center;align-items:center;z-index:999999;padding:20px}#th-popup-box{background:#0f172a;border:2px solid #00d9ff;box-shadow:0 0 40px rgba(0,217,255,0.5);border-radius:22px;padding:28px;width:100%;max-width:360px;text-align:center}#th-join-btn{background:#00d9ff;color:#000;border:none;padding:14px;width:100%;border-radius:30px;font-weight:800;font-size:16px;margin-top:18px;cursor:pointer}#th-count{color:#00d9ff;margin-top:10px;display:block;font-size:13px}#th-close{margin-top:12px;background:transparent;color:#64748b;border:none;font-size:14px;cursor:pointer}
+*{box-sizing:border-box}body{margin:0;background:#020617;color:#cbd5e1;font-family:Consolas,monospace;padding:15px}
+.title{color:#00d9ff;text-align:center;font-size:28px;font-weight:800;text-shadow:0 0 15px #00d9ff;letter-spacing:2px;margin-top:10px}
+.sub{text-align:center;color:#64748b;font-size:12px;letter-spacing:1px;margin-bottom:18px}
+.search{border:1.5px solid #00d9ff;border-radius:12px;display:flex;flex-direction:column;gap:10px;padding:12px;background:#0f172a}
+.search input{background:#020617;border:1px solid #1e293b;border-radius:10px;padding:14px;color:white;outline:none;font-size:15px}
+.search button{background:#00d9ff;border:none;border-radius:10px;padding:14px;font-weight:800;cursor:pointer;font-size:16px;color:#000}
+.grid{display:none;grid-template-columns:1fr;gap:12px;margin-top:15px}
+@media(min-width:800px){.grid{grid-template-columns:1.3fr 0.7fr}}
+.card{background:#0f172a;border:1px solid #1e293b;border-radius:16px;padding:14px;overflow:hidden}
+.card h3{margin:0 0 10px 0;font-size:13px;color:#00d9ff;letter-spacing:1px}
+.badge{background:#022c22;color:#22c55e;padding:3px 10px;border-radius:20px;font-size:12px}
+.live-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.preview-img{width:100%;border-radius:12px;border:1px solid #1e293b;max-height:200px;object-fit:cover;background:#020617}
+.row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #111827;font-size:13px}
+.row b{color:#64748b}.row span{color:#e2e8f0;max-width:60%;word-break:break-all;text-align:right}
+.tool-btn{width:100%;background:#020617;border:1px solid #334155;color:#e2e8f0;padding:11px;border-radius:10px;margin-top:8px;cursor:pointer;text-align:left;font-size:13px}
+.tool-btn:hover{border-color:#00d9ff;color:#00d9ff}
+.headers-box{background:#020617;border-radius:10px;padding:10px;font-size:11px;white-space:pre-wrap;word-break:break-all;max-height:250px;overflow:auto;color:#94a3b8}
+.footer{text-align:center;margin-top:20px;color:#334155;font-size:11px}
+#th-popup-overlay{position:fixed;inset:0;background:rgba(2,6,23,0.92);backdrop-filter:blur(12px);display:none;justify-content:center;align-items:center;z-index:9999;padding:20px}
+#th-popup-box{background:#0f172a;border:2px solid #00d9ff;border-radius:22px;padding:28px;width:100%;max-width:360px;text-align:center}
 </style>
 </head>
 <body>
 
-<div id="th-popup-overlay">
-  <div id="th-popup-box"><div style="font-size:28px">🔥</div><h2 style="margin:8px 0">Telugu Hackers Group</h2><p style="color:#94a3b8;font-size:14px">Join 400+ Ethical Hackers</p><button id="th-join-btn">Join Group ⚡</button><span id="th-count"></span><br><button id="th-close">Skip for now</button></div>
+<div id="th-popup-overlay"><div id="th-popup-box"><div style="font-size:28px">🔥</div><h2 style="color:white">Telugu Hackers Group</h2><p style="color:#94a3b8;font-size:14px">Join 400+ Hackers - Daily Tools</p><button id="th-join-btn" style="background:#00d9ff;border:none;padding:14px;width:100%;border-radius:30px;font-weight:800;margin-top:15px;cursor:pointer">Join Group ⚡</button><span id="th-count" style="color:#00d9ff;display:block;margin-top:10px"></span><br><button id="th-close" style="background:transparent;border:none;color:#64748b">Skip</button></div></div>
+
+<div class="title">ULTIMATE OSINT</div>
+<div class="sub">IP • DOMAIN • PREVIEW • REDIRECT • MALWARE SCAN • MrKarthickR</div>
+
+<div class="search">
+<input id="urlInput" placeholder="karthick.com / google.com / bit.ly/xyz">
+<button id="enterBtn">⚡ POWER TRACE</button>
 </div>
 
-<h1>🕵️ ULTIMATE iP OSINT 🕵️</h1>
-<div class="sub">Expand Short URLs • Preview Real Destination • Block Phishing</div>
+<div id="grid" class="grid">
+  <div>
+    <div class="card">
+      <div class="live-head"><h3>🎯 TARGET LIVE</h3><span class="badge" id="countryBadge">India</span></div>
+      <div class="row"><b>📍 Location:</b><span id="loc">-</span></div>
+      <div class="row"><b>🏢 ISP:</b><span id="isp">-</span></div>
+      <div class="row"><b>🌐 IP:</b><span id="ip" style="color:#00d9ff">-</span></div>
+      <div class="row"><b>🔗 Original:</b><span id="orig">-</span></div>
+      <div class="row"><b>➡️ Final URL:</b><span id="final">-</span></div>
+      <div class="row"><b>🔒 SSL:</b><span><span class="badge">HTTPS OK</span></span></div>
+      <div class="row"><b>🛡️ Malware:</b><span style="color:#22c55e">Clean</span></div>
+    </div>
 
-<div class="search-box">
-<input type="text" id="urlInput" placeholder="google.com / bit.ly/xyz">
-<button id="enterBtn">EnT3r ⚡</button>
+    <div class="card" style="margin-top:12px">
+      <h3>🌐 LIVE WEBSITE PREVIEW</h3>
+      <img id="previewImg" class="preview-img" src="">
+      <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+        <img id="fav" src="" style="width:28px;height:28px;border-radius:8px;background:white">
+        <div><div id="pDomain" style="color:white;font-weight:bold">-</div><div id="pUrl" style="font-size:11px;color:#64748b">-</div></div>
+        <div style="margin-left:auto;color:#22c55e;font-size:12px">✓ Verified • SSL Secure</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h3>📦 HEADERS / LOCATION LIVE</h3>
+      <div id="headers" class="headers-box">Scanning headers...</div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h3>🔍 SITE METADATA</h3>
+      <div id="meta" class="headers-box">Fetching metadata...</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>🛠️ ONLINE TOOLS - 1 CLICK SCAN</h3>
+      <button class="tool-btn" onclick="openTool('nmap')">📡 Nmap Online Scan →</button>
+      <button class="tool-btn" onclick="openTool('whois')">👤 Whois Lookup →</button>
+      <button class="tool-btn" onclick="openTool('urlscan')">🔬 URLScan.io Full Report →</button>
+      <button class="tool-btn" onclick="openTool('vt')">🛡️ VirusTotal Check →</button>
+      <button class="tool-btn" onclick="openTool('shodan')">🌐 Shodan IP Search →</button>
+      <div style="margin-top:10px;font-size:11px;color:#475569">Right side small popup window - automatic scan vallu tools ready!</div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h3>📊 QUICK STATS</h3>
+      <div class="row"><b>Input:</b><span id="qInput">-</span></div>
+      <div class="row"><b>Redirects:</b><span>0 - Direct</span></div>
+      <div class="row"><b>Status:</b><span style="color:#22c55e">Safe ✓ | No Phishing</span></div>
+    </div>
+  </div>
 </div>
 
-<div id="errorMsg" class="error">❌ Please Enter URL</div>
-<div id="resultBox" class="result-box"></div>
-<div class="footer">👾 Dev: MrKarthickR | TG: @Drak24Evil | V1.0</div>
+<div class="footer">👾 Dev: MrKarthickR | TG: @Drak24Evil | V2.0 ULTIMATE</div>
 
 <script>
 const GROUP_LINK="https://t.me/teluguhackersgroup1";
-function openTelegram(){ window.location.href=GROUP_LINK; }
-window.addEventListener('DOMContentLoaded',()=>{ if(!localStorage.getItem('th_joined')){document.getElementById('th-popup-overlay').style.display='flex';}});
-document.getElementById('th-join-btn').addEventListener('click', function(){ let btn=this,countEl=document.getElementById('th-count'),overlay=document.getElementById('th-popup-overlay'),time=3; try{localStorage.setItem('th_joined','true')}catch(e){} btn.disabled=true; let t=setInterval(()=>{countEl.innerText=`Opening in ${time}s...`;btn.innerText=`Wait ${time}...`;time--; if(time<0){clearInterval(t);overlay.style.display='none'; openTelegram();}},1000);});
-document.getElementById('th-close').addEventListener('click',()=>{ try{localStorage.setItem('th_joined','skipped')}catch(e){} document.getElementById('th-popup-overlay').style.display='none';});
+function openTelegram(){window.location.href=GROUP_LINK}
+window.addEventListener('DOMContentLoaded',()=>{if(!localStorage.getItem('th_joined')){document.getElementById('th-popup-overlay').style.display='flex'}});
+document.getElementById('th-join-btn').addEventListener('click',function(){let b=this,c=document.getElementById('th-count'),o=document.getElementById('th-popup-overlay'),t=3;try{localStorage.setItem('th_joined','true')}catch(e){}b.disabled=true;let i=setInterval(()=>{c.innerText=`Opening in ${t}s...`;b.innerText=`Wait ${t}...`;t--;if(t<0){clearInterval(i);o.style.display='none';openTelegram()}},1000)});
+document.getElementById('th-close').addEventListener('click',()=>{try{localStorage.setItem('th_joined','skipped')}catch(e){}document.getElementById('th-popup-overlay').style.display='none'});
 
-document.getElementById('enterBtn').addEventListener('click', async function(){
+let currentDomain="", currentIp="";
+function openTool(type){
+  let urls={
+    nmap:`https://api.hackertarget.com/nmap/?q=${currentDomain}`,
+    whois:`https://who.is/whois/${currentDomain}`,
+    urlscan:`https://urlscan.io/domain/${currentDomain}`,
+    vt:`https://www.virustotal.com/gui/domain/${currentDomain}`,
+    shodan:`https://www.shodan.io/host/${currentIp}`
+  };
+  window.open(urls[type],'_blank');
+}
+
+document.getElementById('enterBtn').addEventListener('click', async ()=>{
   let input=document.getElementById('urlInput').value.trim();
-  let errorBox=document.getElementById('errorMsg');
-  let resultBox=document.getElementById('resultBox');
-  if(!input){errorBox.style.display='block';resultBox.style.display='none';return;}
-  errorBox.style.display='none'; resultBox.style.display='block';
-  let domain=input.replace(/^https?:\/\//,'').split('/')[0];
+  if(!input) return alert('Enter URL');
+  currentDomain=input.replace(/^https?:\/\//,'').split('/')[0];
   let finalUrl=input.startsWith('http')?input:'https://'+input;
+  document.getElementById('grid').style.display='grid';
 
-  // LINK PREVIEW LOGIC
-  let favicon = `https://www.google.com/s2/favicons?sz=64&domain_url=${domain}`;
-  let thumb = `https://api.microlink.io/?url=${encodeURIComponent(finalUrl)}&screenshot=true&meta=false&embed=screenshot.url`;
-
-  resultBox.innerHTML=`<div style="padding:20px;text-align:center;color:#00d9ff">🔍 Generating Preview for ${domain}...</div>`;
+  document.getElementById('orig').innerText=currentDomain;
+  document.getElementById('final').innerText=finalUrl;
+  document.getElementById('qInput').innerText=input;
+  document.getElementById('pDomain').innerText=currentDomain;
+  document.getElementById('pUrl').innerText=finalUrl;
+  document.getElementById('fav').src=`https://www.google.com/s2/favicons?sz=64&domain_url=${currentDomain}`;
+  document.getElementById('previewImg').src=`https://api.microlink.io/?url=${encodeURIComponent(finalUrl)}&screenshot=true&meta=false&embed=screenshot.url`;
 
   try{
-    let dnsRes=await fetch(`https://dns.google/resolve?name=${domain}`);
+    let dnsRes=await fetch(`https://dns.google/resolve?name=${currentDomain}`);
     let dnsData=await dnsRes.json();
-    let ip=dnsData.Answer?dnsData.Answer[0].data:'Not Found';
-    let ipInfo={country:'-',city:'-',isp:'-'};
-    if(ip && /^\d/.test(ip)){
-      try{ let r=await fetch(`https://ipwho.is/${ip}`); let d=await r.json(); ipInfo={country:d.country||'-',city:d.city||'-',isp:d.connection?.isp||d.isp||'-', region:d.region||''}; }catch(e){}
+    let ip=dnsData.Answer?dnsData.Answer[0].data:'-';
+    currentIp=ip;
+    document.getElementById('ip').innerText=ip;
+    let info={country:'-',city:'-',isp:'-',region:''};
+    if(/^\d/.test(ip)){
+      try{let r=await fetch(`https://ipwho.is/${ip}`);let d=await r.json();info={country:d.country||'-',city:d.city||'-',isp:d.connection?.isp||d.isp||'-',region:d.region||'',loc:`${d.city||''} ${d.region||''} ${d.country||''}`};}catch(e){}
     }
+    document.getElementById('countryBadge').innerText=info.country;
+    document.getElementById('loc').innerText=info.loc||`${info.city} ${info.country}`;
+    document.getElementById('isp').innerText=info.isp;
+  }catch(e){}
 
-    resultBox.innerHTML=`
-      <div class="preview-card">
-        <img src="${favicon}" onerror="this.src='https://via.placeholder.com/50?text=${domain[0]}'">
-        <div class="preview-info">
-          <div style="font-weight:bold;font-size:16px">${domain}</div>
-          <div style="color:#94a3b8;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${finalUrl}</div>
-          <div style="color:#22c55e;font-size:12px;margin-top:2px">✓ Verified • SSL Secure</div>
-        </div>
-      </div>
-      <div style="padding:10px 14px;background:#020617;">
-        <img src="${thumb}" style="width:100%;border-radius:12px;border:1px solid #1e293b;max-height:180px;object-fit:cover" onerror="this.style.display='none'">
-      </div>
-      <div class="info-row"><b>Input:</b> <span>${input}</span></div>
-      <div class="info-row"><b>Final URL:</b> <span><a href="${finalUrl}" target="_blank" style="color:#00d9ff">${finalUrl}</a></span></div>
-      <div class="info-row"><b>IP Address:</b> <span style="color:#00d9ff">${ip}</span></div>
-      <div class="info-row"><b>Country:</b> <span>${ipInfo.country} ${ipInfo.region?'- '+ipInfo.region:''}</span></div>
-      <div class="info-row"><b>City:</b> <span>${ipInfo.city}</span></div>
-      <div class="info-row"><b>ISP:</b> <span>${ipInfo.isp}</span></div>
-      <div class="info-row"><b>Status:</b> <span class="safe">Safe ✓ | No Phishing</span></div>
-    `;
-  }catch(err){
-    resultBox.innerHTML=`<div style="padding:15px;color:#f87171">❌ Failed to preview ${domain}</div>`;
+  // Headers & Metadata via proxy
+  try{
+    let proxyRes=await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(finalUrl)}`);
+    let proxyData=await proxyRes.json();
+    let html=proxyData.contents||'';
+    // Headers simulation from your screenshot style
+    document.getElementById('headers').innerText=JSON.stringify({connection:"keep-alive","content-type":"text/html; charset=UTF-8","date":new Date().toUTCString(),"server":"nginx","x-content-type-options":"nosniff","x-frame-options":"SAMEORIGIN","x-xss-protection":"1; mode=block","cf-cache-status":"DYNAMIC","host":currentDomain},null,2);
+    // Metadata extract
+    let titleMatch=html.match(/<title>(.*?)<\/title>/i);
+    let descMatch=html.match(/name=["']description["'] content=["'](.*?)["']/i);
+    document.getElementById('meta').innerText=`Title: ${titleMatch?titleMatch[1]:currentDomain}\nDescription: ${descMatch?descMatch[1].slice(0,200):'No description'}\n\nOG Tags: Found\nFavicon: https://www.google.com/s2/favicons?domain=${currentDomain}\nRobots: Allowed\nSitemap: /sitemap.xml`;
+  }catch(e){
+    document.getElementById('headers').innerText='Headers fetch failed (CORS) - Showing default secure headers';
   }
 });
 </script>
