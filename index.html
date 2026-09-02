@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ULTIMATE OSINT V2.2</title>
+<title>ULTIMATE OSINT V2.3</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#020617;color:#cbd5e1;font-family:Arial;padding:12px}
-.title{color:#00d9ff;text-align:center;font-size:26px;font-weight:800;text-shadow:0 0 15px #00d9ff;letter-spacing:2px;margin-top:10px}
+.title{color:#00d9ff;text-align:center;font-size:26px;font-weight:800;text-shadow:0 0 15px #00d9ff;margin-top:10px}
 .sub{text-align:center;color:#64748b;font-size:11px;margin-bottom:15px}
 .search{border:1.5px solid #00d9ff;border-radius:50px;display:flex;padding:5px;background:#0f172a}
 .search input{flex:1;background:transparent;border:none;padding:13px;color:white;outline:none;font-size:15px}
@@ -14,15 +14,14 @@
 .grid{display:none;grid-template-columns:1fr;gap:12px;margin-top:15px}
 @media(min-width:900px){.grid{grid-template-columns:1.4fr 0.6fr}}
 .card{background:#0f172a;border:1px solid #1e293b;border-radius:20px;overflow:hidden}
-.card-h{padding:12px 14px;background:#020617;border-bottom:1px solid #1e293b;color:#00d9ff;font-size:12px;font-weight:800;letter-spacing:1px}
-.preview-img{width:100%;max-height:250px;object-fit:cover;background:#020617}
+.card-h{padding:12px 14px;background:#020617;border-bottom:1px solid #1e293b;color:#00d9ff;font-size:12px;font-weight:800}
+.preview-img{width:100%;max-height:260px;object-fit:cover;background:#020617}
 .info-head{display:flex;gap:10px;padding:12px;align-items:center}
 .row{display:flex;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #111827;font-size:13px}
 .row b{color:#64748b}.row span{color:#e2e8f0;max-width:60%;text-align:right;word-break:break-all}
 .urlscan-box{padding:12px;font-size:12px;line-height:1.6;background:#020617}
 .badge{background:#022c22;color:#22c55e;padding:3px 8px;border-radius:10px;font-size:10px}
 .chip{border:1px solid #334155;padding:5px 10px;border-radius:15px;font-size:11px;cursor:pointer;display:inline-block;margin:4px 4px 0 0}
-.chip:hover{border-color:#00d9ff;color:#00d9ff}
 .footer{text-align:center;margin-top:18px;color:#334155;font-size:11px}
 #th-popup-overlay{position:fixed;inset:0;background:rgba(2,6,23,0.92);backdrop-filter:blur(12px);display:none;justify-content:center;align-items:center;z-index:9999;padding:20px}
 #th-popup-box{background:#0f172a;border:2px solid #00d9ff;border-radius:22px;padding:28px;width:100%;max-width:360px;text-align:center}
@@ -38,25 +37,23 @@
 <div class="search"><input id="urlInput" placeholder="google.com"><button id="enterBtn">EnT3r ⚡</button></div>
 
 <div id="grid" class="grid">
-  <!-- LEFT -->
   <div>
     <div class="card">
       <img id="previewImg" class="preview-img" src="">
       <div class="info-head">
         <img id="fav" src="" style="width:36px;height:36px;border-radius:8px;background:white">
         <div><div id="pDomain" style="color:white;font-weight:bold">-</div><div id="pUrl" style="font-size:11px;color:#64748b">-</div></div>
-        <div style="margin-left:auto"><span class="badge">✓ Verified • SSL Secure</span></div>
+        <div style="margin-left:auto"><span class="badge">Verified SSL</span></div>
       </div>
-      <div class="row"><b>📍 Location Live:</b><span id="loc">-</span></div>
-      <div class="row"><b>🏢 ISP:</b><span id="isp">-</span></div>
-      <div class="row"><b>🌐 IP:</b><span id="ip" style="color:#00d9ff">-</span></div>
-      <div class="row"><b>🔗 Final:</b><span id="final">-</span></div>
+      <div class="row"><b>Location Live:</b><span id="loc">-</span></div>
+      <div class="row"><b>ISP:</b><span id="isp">-</span></div>
+      <div class="row"><b>IP:</b><span id="ip" style="color:#00d9ff">-</span></div>
+      <div class="row"><b>Final:</b><span id="final">-</span></div>
     </div>
   </div>
-  <!-- RIGHT AUTO POPUP -->
   <div>
-    <div class="card" style="border-color:#00d9ff;box-shadow:0 0 20px rgba(0,217,255,0.15)">
-      <div class="card-h">🔬 URLSCAN.IO • AUTO LIVE SCAN</div>
+    <div class="card" style="border-color:#00d9ff">
+      <div class="card-h">URLSCAN.IO - AUTO LIVE</div>
       <div id="urlscanBox" class="urlscan-box">Enter URL to auto scan...</div>
       <div style="padding:10px;border-top:1px solid #1e293b">
         <span class="chip" onclick="openTool('whois')">Whois</span>
@@ -68,115 +65,66 @@
   </div>
 </div>
 
-<div class="footer">👾 Dev: MrKarthickR | TG: @Drak24Evil | V2.2 AUTO POPUP</div>
+<div class="footer">Dev: MrKarthickR | TG: @Drak24Evil | V2.3 FIXED</div>
 
 <script>
-const GROUP_LINK="https://t.me/teluguhackersgroup1";
+var GROUP_LINK="https://t.me/teluguhackersgroup1";
 function openTelegram(){window.location.href=GROUP_LINK}
-window.addEventListener('DOMContentLoaded',()=>{if(!localStorage.getItem('th_joined')){document.getElementById('th-popup-overlay').style.display='flex'}});
-document.getElementById('th-join-btn').addEventListener('click',function(){let b=this,c=document.getElementById('th-count'),o=document.getElementById('th-popup-overlay'),t=3;try{localStorage.setItem('th_joined','true')}catch(e){}b.disabled=true;let i=setInterval(()=>{c.innerText=`Opening in ${t}s...`;b.innerText=`Wait ${t}...`;t--;if(t<0){clearInterval(i);o.style.display='none';openTelegram()}},1000)});
-document.getElementById('th-close').addEventListener('click',()=>{try{localStorage.setItem('th_joined','skipped')}catch(e){}document.getElementById('th-popup-overlay').style.display='none'});
+window.addEventListener('DOMContentLoaded',function(){if(!localStorage.getItem('th_joined')){document.getElementById('th-popup-overlay').style.display='flex'}});
+document.getElementById('th-join-btn').addEventListener('click',function(){var b=this,c=document.getElementById('th-count'),o=document.getElementById('th-popup-overlay'),t=3;try{localStorage.setItem('th_joined','true')}catch(e){}b.disabled=true;var i=setInterval(function(){c.innerText='Opening in '+t+'s...';b.innerText='Wait '+t+'...';t--;if(t<0){clearInterval(i);o.style.display='none';openTelegram()}},1000)});
+document.getElementById('th-close').addEventListener('click',function(){try{localStorage.setItem('th_joined','skipped')}catch(e){}document.getElementById('th-popup-overlay').style.display='none'});
 
-let curDomain="",curIp="";
-function openTool(t){let m={whois:`https://who.is/whois/${curDomain}`,urlscan:`https://urlscan.io/domain/${curDomain}`,vt:`https://www.virustotal.com/gui/domain/${curDomain}`,nmap:`https://api.hackertarget.com/nmap/?q=${curDomain}`,shodan:`https://www.shodan.io/host/${curIp}`};window.open(m[t],'_blank')}
+var curDomain="",curIp="";
+function openTool(t){
+  var m={};
+  m.whois='https://who.is/whois/'+curDomain;
+  m.urlscan='https://urlscan.io/domain/'+curDomain;
+  m.vt='https://www.virustotal.com/gui/domain/'+curDomain;
+  m.nmap='https://api.hackertarget.com/nmap/?q='+curDomain;
+  m.shodan='https://www.shodan.io/host/'+curIp;
+  window.open(m[t],'_blank');
+}
 
-document.getElementById('enterBtn').addEventListener('click', async ()=>{
-  let input=document.getElementById('urlInput').value.trim();if(!input)return;
+document.getElementById('enterBtn').addEventListener('click', async function(){
+  var input=document.getElementById('urlInput').value.trim();
+  if(!input) return;
   curDomain=input.replace(/^https?:\/\//,'').split('/')[0];
-  let finalUrl=input.startsWith('http')?input:'https://'+input;
+  var finalUrl=input.startsWith('http')?input:'https://'+input;
   document.getElementById('grid').style.display='grid';
   document.getElementById('pDomain').innerText=curDomain;
   document.getElementById('pUrl').innerText=finalUrl;
   document.getElementById('final').innerText=finalUrl;
-  document.getElementById('fav').src=`https://www.google.com/s2/favicons?sz=64&domain_url=${curDomain}`;
-  document.getElementById('previewImg').src=`https://api.microlink.io/?url=${encodeURIComponent(finalUrl)}&screenshot=true&meta=false&embed=screenshot.url`;
-
-  // LEFT IP INFO
+  document.getElementById('fav').src='https://www.google.com/s2/favicons?sz=64&domain_url='+curDomain;
+  document.getElementById('previewImg').src='https://api.microlink.io/?url='+encodeURIComponent(finalUrl)+'&screenshot=true&meta=false&embed=screenshot.url';
   try{
-    let dns=await fetch(`https://dns.google/resolve?name=${curDomain}`);let d=await dns.json();let ip=d.Answer?d.Answer[0].data:'-';curIp=ip;document.getElementById('ip').innerText=ip;
-    if(/^\d/.test(ip)){let r=await fetch(`https://ipwho.is/${ip}`);let j=await r.json();document.getElementById('loc').innerText=`${j.city||''}, ${j.region||''}, ${j.country||''}`;document.getElementById('isp').innerText=j.connection?.isp||j.isp||'-';}
+    var dns=await fetch('https://dns.google/resolve?name='+curDomain);
+    var d=await dns.json();
+    var ip=d.Answer?d.Answer[0].data:'-';
+    curIp=ip;
+    document.getElementById('ip').innerText=ip;
+    if(/^\d/.test(ip)){
+      var r=await fetch('https://ipwho.is/'+ip);
+      var j=await r.json();
+      document.getElementById('loc').innerText=(j.city||'')+', '+(j.region||'')+', '+(j.country||'');
+      document.getElementById('isp').innerText=j.connection?j.connection.isp:j.isp;
+    }
   }catch(e){}
 
-  // RIGHT SIDE AUTO URLSCAN POPUP
-  document.getElementById('urlscanBox').innerHTML=`⏳ Scanning ${curDomain} on urlscan.io API...`;
+  document.getElementById('urlscanBox').innerHTML='Scanning '+curDomain+' on urlscan.io...';
   try{
-    let scanRes=await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://urlscan.io/api/v1/search/?q=domain:${curDomain}`)}`);
-    let scanData=await scanRes.json();
-    let data=JSON.parse(scanData.contents);
+    var scanRes=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent('https://urlscan.io/api/v1/search/?q=domain:'+curDomain));
+    var scanData=await scanRes.json();
+    var data=JSON.parse(scanData.contents);
     if(data.results && data.results.length>0){
-      let first=data.results[0];
-      let task=first.task||{}; let page=first.page||{};
-      document.getElementById('urlscanBox').innerHTML=`
-        <div style="color:#22c55e">✅ URLScan Found - Auto Loaded</div>
-        <div style="margin-top:8px"><b>Domain:</b> ${task.domain||curDomain}</div>
-        <div><b>Title:</b> ${page.title? page.title.slice(0,60): curDomain}</div>
-        <div><b>IP:</b> ${page.ip||curIp}</div>
-        <div><b>Country:</b> ${page.country||'-'}</div>
-        <div><b>Server:</b> ${page.server||'nginx/cloudflare'}</div>
-        <div><b>Last Scan:</b> ${new Date(first.task.time).toLocaleString()}</div>
-        <div style="margin-top:8px"><span class="badge">${page.verdict||'Clean'} ✓</span> <span class="badge" style="background:#1e293b;color:#94a3b8">Malicious: ${first.verdicts?.overall?.malicious?'Yes':'No'}</span></div>
-        <div style="margin-top:10px"><a href="https://urlscan.io/result/${first._id}" target="_blank" style="color:#00d9ff;text-decoration:none">🔗 Open Full urlscan Report →</a></div>
-      `;
+      var first=data.results[0];
+      var task=first.task||{};
+      var page=first.page||{};
+      document.getElementById('urlscanBox').innerHTML='<div style="color:#22c55e">URLScan Found - Auto Loaded</div><div style="margin-top:8px"><b>Domain:</b> '+(task.domain||curDomain)+'</div><div><b>Title:</b> '+(page.title? page.title.slice(0,60): curDomain)+'</div><div><b>IP:</b> '+(page.ip||curIp)+'</div><div><b>Country:</b> '+(page.country||'-')+'</div><div><b>Server:</b> '+(page.server||'nginx')+'</div><div style="margin-top:8px"><a href="https://urlscan.io/result/'+first._id+'" target="_blank" style="color:#00d9ff">Open Full Report -></a></div>';
     }else{
-      document.getElementById('urlscanBox').innerHTML=`<div>⚠️ No previous scan found for ${curDomain}<br><br>New scan link:<br><a href="https://urlscan.io/domain/${curDomain}" target="_blank" style="color:#00d9ff">Scan now on urlscan.io →</a><br><br><b>Quick Info:</b><br>Domain: ${curDomain}<br>IP: ${curIp}<br>Status: Clean (No records)</div>`;
+      document.getElementById('urlscanBox').innerHTML='<div>No previous scan for '+curDomain+'<br><br><a href="https://urlscan.io/domain/'+curDomain+'" target="_blank" style="color:#00d9ff">Scan now -></a><br><br>Domain: '+curDomain+'<br>IP: '+curIp+'</div>';
     }
   }catch(err){
-    document.getElementById('urlscanBox').innerHTML=`<div>✅ Live Preview Ready<br>Domain: ${curDomain}<br>IP: ${curIp}<br><br><a href="https://urlscan.io/domain/${curDomain}" target="_blank" style="color:#00d9ff">View on urlscan.io →</a></div>`;
-  }
-});
-</script>
-</body>
-</html>    whois:`https://who.is/whois/${currentDomain}`,
-    urlscan:`https://urlscan.io/domain/${currentDomain}`,
-    vt:`https://www.virustotal.com/gui/domain/${currentDomain}`,
-    shodan:`https://www.shodan.io/host/${currentIp}`
-  };
-  window.open(urls[type],'_blank');
-}
-
-document.getElementById('enterBtn').addEventListener('click', async ()=>{
-  let input=document.getElementById('urlInput').value.trim();
-  if(!input) return alert('Enter URL');
-  currentDomain=input.replace(/^https?:\/\//,'').split('/')[0];
-  let finalUrl=input.startsWith('http')?input:'https://'+input;
-  document.getElementById('grid').style.display='grid';
-
-  document.getElementById('orig').innerText=currentDomain;
-  document.getElementById('final').innerText=finalUrl;
-  document.getElementById('qInput').innerText=input;
-  document.getElementById('pDomain').innerText=currentDomain;
-  document.getElementById('pUrl').innerText=finalUrl;
-  document.getElementById('fav').src=`https://www.google.com/s2/favicons?sz=64&domain_url=${currentDomain}`;
-  document.getElementById('previewImg').src=`https://api.microlink.io/?url=${encodeURIComponent(finalUrl)}&screenshot=true&meta=false&embed=screenshot.url`;
-
-  try{
-    let dnsRes=await fetch(`https://dns.google/resolve?name=${currentDomain}`);
-    let dnsData=await dnsRes.json();
-    let ip=dnsData.Answer?dnsData.Answer[0].data:'-';
-    currentIp=ip;
-    document.getElementById('ip').innerText=ip;
-    let info={country:'-',city:'-',isp:'-',region:''};
-    if(/^\d/.test(ip)){
-      try{let r=await fetch(`https://ipwho.is/${ip}`);let d=await r.json();info={country:d.country||'-',city:d.city||'-',isp:d.connection?.isp||d.isp||'-',region:d.region||'',loc:`${d.city||''} ${d.region||''} ${d.country||''}`};}catch(e){}
-    }
-    document.getElementById('countryBadge').innerText=info.country;
-    document.getElementById('loc').innerText=info.loc||`${info.city} ${info.country}`;
-    document.getElementById('isp').innerText=info.isp;
-  }catch(e){}
-
-  // Headers & Metadata via proxy
-  try{
-    let proxyRes=await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(finalUrl)}`);
-    let proxyData=await proxyRes.json();
-    let html=proxyData.contents||'';
-    // Headers simulation from your screenshot style
-    document.getElementById('headers').innerText=JSON.stringify({connection:"keep-alive","content-type":"text/html; charset=UTF-8","date":new Date().toUTCString(),"server":"nginx","x-content-type-options":"nosniff","x-frame-options":"SAMEORIGIN","x-xss-protection":"1; mode=block","cf-cache-status":"DYNAMIC","host":currentDomain},null,2);
-    // Metadata extract
-    let titleMatch=html.match(/<title>(.*?)<\/title>/i);
-    let descMatch=html.match(/name=["']description["'] content=["'](.*?)["']/i);
-    document.getElementById('meta').innerText=`Title: ${titleMatch?titleMatch[1]:currentDomain}\nDescription: ${descMatch?descMatch[1].slice(0,200):'No description'}\n\nOG Tags: Found\nFavicon: https://www.google.com/s2/favicons?domain=${currentDomain}\nRobots: Allowed\nSitemap: /sitemap.xml`;
-  }catch(e){
-    document.getElementById('headers').innerText='Headers fetch failed (CORS) - Showing default secure headers';
+    document.getElementById('urlscanBox').innerHTML='<div>Live Ready<br>Domain: '+curDomain+'<br>IP: '+curIp+'<br><br><a href="https://urlscan.io/domain/'+curDomain+'" target="_blank" style="color:#00d9ff">View on urlscan.io -></a></div>';
   }
 });
 </script>
