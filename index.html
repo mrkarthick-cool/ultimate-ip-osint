@@ -1,70 +1,129 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ULTIMATE iP OSINT</title>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ULTIMATE IP OSINT - MrKarthickR</title>
 <style>
-*{font-family:'Manrope',monospace}
-body{background:#070a12;color:#fff;margin:0}
-.hero{background:radial-gradient(circle at top,#0a2a4a,#070a12);padding:35px 15px;text-align:center}
-h1{font-size:40px;color:#00d4ff;text-shadow:0 0 20px #00d4ff;margin:0}
-.hero p{color:#aaa;max-width:600px;margin:10px auto 20px;font-size:13px}
-.searchbox{max-width:600px;margin:0 auto;background:#10182b;padding:6px;border-radius:50px;display:flex;border:1px solid #00d4ff;box-shadow:0 0 25px rgba(0,212,255,0.25)}
-.searchbox input{flex:1;background:transparent;border:none;color:#fff;padding:12px 20px;outline:none;font-size:15px}
-.searchbox button{background:#00d4ff;color:#000;border:none;padding:12px 28px;border-radius:40px;font-weight:bold;cursor:pointer}
-.card{max-width:900px;margin:20px auto;padding:0 15px}
-.box{background:#10182b;border:1px solid #1e3a5f;border-radius:16px;padding:14px;margin-top:14px;font-size:12px;word-break:break-all}
-.badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:bold}
-.ok{background:#003d1f;color:#00ff88}.bad{background:#3d0000;color:#ff4444}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:650px){.grid{grid-template-columns:1fr}}
-.screenshot{width:100%;border-radius:12px;border:1px solid #333;min-height:200px;background:#000}
-.footer{text-align:center;color:#555;padding:20px;font-size:11px}
-a{color:#00d4ff;text-decoration:none}
-</style></head>
-<body>
-<div class="hero">
-<h2> 🕵️ ULTIMATE iP OSINT 🕵️ </h2>
-<p>Expand Short URLs • Preview Real Destination • Block Phishing • IP Trace • 
-  <a href="https://t.me/teluguhackersgroup1" target="_blank" rel="noopener noreferrer">
-   > 🧑‍💻 Team Work <
-  </a>
-  <br> </p>
-<div class="searchbox">
-<input id="t" placeholder="Enter link - google.com / bit.ly/xyz / 8.8.8.8 or ip" value="">
-<button onclick="go()">EnT3r ⚡</button>
-</div>
-</div>
-<div class="card"><div id="out"></div></div>
-<div class="footer">👾 Dev: <b style="color:#00d4ff">MrKarthickR</b> | TG: <a href="https://t.me/Drak24Evil">@Drak24Evil</a> | Group: <a href="https://t.me/teluguhackersgroup1">Telugu Hackers Group</a> | V3</div>
-<script>
-async function go(){
-const v=document.getElementById('t').value.trim();
-const o=document.getElementById('out');
-if(!v){o.innerHTML='<div class=box>❌ Please Enter URL</div>';return}
-o.innerHTML='<div class=box>⏳ Expanding & Tracing... Please wait 3 sec...</div>';
-const safeJson=async (u)=>{
- try{const r=await fetch(u);const t=await r.text();return JSON.parse(t);}catch(e){return {finalUrl:v,original:v,status:0,ssl:false,headers:{},redirects:[v],malwareSuspect:false,htmlPreview:'Error: '+e.message,target:v,location:'N/A',isp:'N/A',ip:'N/A',loc:'N/A'}}
-};
-try{
-const [ip,pre]=await Promise.all([
- safeJson(`/api?key=THG-DEV-MrKarthickR-2026&target=${encodeURIComponent(v)}`),
- safeJson(`/api/preview?url=${encodeURIComponent(v)}`)
-]);
-const finalUrl=pre.finalUrl||'https://'+v.replace(/^https?:\/\//,'');
-const shot=`https://image.thum.io/get/width/600/crop/800/noanimate/${finalUrl}`;
-const redirects=(pre.redirects||[]).map((r,i)=>`${i+1}. → ${r}`).join('<br>')||`1. ${v} → ${finalUrl}`;
-o.innerHTML=`
-<div class="grid">
-<div class="box">🎯 <b>${ip.target||v}</b><br><br>📍 Location: ${ip.location||'N/A'}<br>🏢 ISP: ${ip.isp||'N/A'}<br>🌐 IP: ${ip.ip||'N/A'}<br><br><span class="badge ok">${ip.loc||'OK'}</span></div>
-<div class="box">🔗 Original: ${pre.original||v}<br>➡️ Final: <a href="${finalUrl}" target="_blank">${finalUrl}</a><br><br>🔒 SSL: ${pre.ssl?'<span class=badge ok>HTTPS</span>':'<span class=badge bad>NO SSL</span>'}<br>🛡️ Malware: ${pre.malwareSuspect?'<span class=badge bad>SUSPECT</span>':'<span class=badge ok>Clean</span>'}<br>📊 Status: ${pre.status||200}</div>
-</div>
-<div class="box">↪️ <b>Redirect Chain:</b><br><br>${redirects}<br><br><b>Headers:</b><div style="background:#000;padding:8px;border-radius:8px;max-height:120px;overflow:auto;font-size:10px">${JSON.stringify(pre.headers||{},null,2).substring(0,800)}</div></div>
-<div class="grid">
-<div class="box">📸 <b>Live Screenshot (Phishing Protection):</b><br><img src="${shot}" class="screenshot" onerror="this.src='https://via.placeholder.com/600x400/10182b/00d4ff?text=Screenshot+Preview'"><br><br><a href="${finalUrl}" target="_blank"><button style="width:100%;padding:12px;border-radius:10px;background:#00d4ff;border:none;font-weight:bold">🔗 Open Real Site</button></a></div>
-<div class="box">👁️ <b>HTML Source:</b><div style="background:#000;color:#0f0;padding:10px;border-radius:8px;max-height:500px;overflow:auto;font-size:10px">${(pre.htmlPreview||'').replace(/</g,'&lt;').substring(0,8000)}</div></div>
-</div>`;
-}catch(e){o.innerHTML='<div class=box>❌ '+e.message+'</div>'}
+*{box-sizing:border-box}
+body{margin:0;background:#020617;color:white;font-family:Arial,sans-serif;text-align:center;padding:20px;min-height:100vh}
+h1{margin-top:60px;font-size:26px;line-height:1.2}
+.sub{color:#94a3b8;font-size:14px;margin:10px;line-height:1.4}
+.search-box{border:2px solid #00d9ff;border-radius:50px;display:flex;padding:5px;margin:30px 0;background:#0f172a;overflow:hidden}
+.search-box input{flex:1;background:transparent;border:none;color:white;padding:15px;outline:none;font-size:15px}
+.search-box button{background:#00d9ff;border:none;border-radius:50px;padding:10px 28px;font-weight:bold;cursor:pointer}
+.error{background:#0f172a;border:1px solid #334155;border-radius:20px;padding:15px;margin-top:20px;text-align:left;color:#94a3b8}
+.footer{margin-top:40px;color:#64748b;font-size:13px}
+.footer a{color:#00d9ff;text-decoration:none}
+
+/* POPUP */
+#th-popup-overlay{
+ position:fixed;top:0;left:0;width:100%;height:100%;
+ background:rgba(2,6,23,0.92);backdrop-filter:blur(12px);
+ display:none;justify-content:center;align-items:center;
+ z-index:999999;padding:20px;
 }
-go();
+#th-popup-box{
+ background:#0f172a;border:2px solid #00d9ff;
+ box-shadow:0 0 40px rgba(0,217,255,0.5);border-radius:22px;
+ padding:28px;width:100%;max-width:360px;
+}
+#th-popup-box h2{margin:0 0 10px 0;font-size:22px}
+#th-popup-box p{color:#94a3b8;font-size:14px;margin:0;line-height:1.5}
+#th-join-btn{
+ background:#00d9ff;color:#000;border:none;
+ padding:14px;width:100%;border-radius:30px;
+ font-weight:800;font-size:16px;margin-top:20px;cursor:pointer;
+}
+#th-count{color:#00d9ff;margin-top:12px;display:block;font-size:13px;min-height:16px}
+#th-close{margin-top:14px;background:transparent;color:#64748b;border:none;font-size:14px;cursor:pointer;padding:5px}
+</style>
+</head>
+<body>
+
+<!-- POPUP -->
+<div id="th-popup-overlay">
+  <div id="th-popup-box">
+    <div style="font-size:30px">🔥</div>
+    <h2>Telugu Hackers Group</h2>
+    <p>Join 400+ Ethical Hackers<br>Daily Tools & Tricks</p>
+    <button id="th-join-btn">Join Group ⚡</button>
+    <span id="th-count"></span>
+    <br><button id="th-close"><p><b> <a href="https://t.me/TeluguHackersGroup">Skip for now ⏭️</a>  </p> </b> </button>
+  </div>
+</div>
+
+<h1>🕵️ ULTIMATE iP OSINT 🕵️</h1>
+<div class="sub">Expand Short URLs • Preview Real Destination • Block Phishing • IP Trace <br> • <a href="https://t.me/TeluguHackersGroup"> 👨‍💻 Team Work </a> </div>
+
+<div class="search-box">
+<input type="text" id="urlInput" placeholder="Enter link - google.com / bit.ly/xyz">
+<button onclick="alert('Your OSINT logic here')">EnT3r ⚡</button>
+</div>
+
+<div class="error">❌ Please Enter URL</div>
+
+<div class="footer">
+👾 Dev: <a href="#">MrKarthickR</a> | TG: <a href="#">@Drak24Evil</a> | V3.2 - Hacker Windows
+</div>
+
+<script>
+const GROUP_LINK = "https://t.me/TeluguHackersGroup"; // <-- NEE ORIGINAL LINK IKADA PETTU
+
+// FIXED OPEN FUNCTION - ALL BROWSER SUPPORT
+function openTelegramLink(){
+  // Method works even on file:// and old browsers
+  window.location.href = GROUP_LINK;
+}
+
+// ON LOAD - CHECK IF ALREADY JOINED
+window.addEventListener('DOMContentLoaded', function(){
+  let joined = localStorage.getItem('th_joined');
+  if(!joined){
+    document.getElementById('th-popup-overlay').style.display = 'flex';
+  }
+});
+
+// JOIN BUTTON - 3 SEC LOGIC
+document.getElementById('th-join-btn').addEventListener('click', function(){
+  let btn = this;
+  let countEl = document.getElementById('th-count');
+  let overlay = document.getElementById('th-popup-overlay');
+  let time = 3;
+
+  // SAVE META DATA - Malli popup raakudadu
+  try{
+    localStorage.setItem('th_joined', 'true');
+    localStorage.setItem('th_join_time', Date.now().toString());
+  }catch(e){}
+
+  btn.disabled = true;
+  btn.style.opacity = "0.7";
+  
+  countEl.innerText = "Opening Telegram in 3s...";
+  btn.innerText = "Wait 3...";
+
+  let timer = setInterval(function(){
+    time--;
+    if(time > 0){
+      countEl.innerText = "Opening Telegram in " + time + "s...";
+      btn.innerText = "Wait " + time + "...";
+    } else {
+      clearInterval(timer);
+      countEl.innerText = "Redirecting...";
+      overlay.style.display = 'none';
+      // DIRECT REDIRECT - NO POPUP BLOCK
+      openTelegramLink();
+    }
+  }, 1000);
+});
+
+// SKIP BUTTON
+document.getElementById('th-close').addEventListener('click', function(){
+  try{ localStorage.setItem('th_joined', 'skipped'); }catch(e){}
+  document.getElementById('th-popup-overlay').style.display='none';
+});
 </script>
-</body></html>
+
+</body>
+</html>
