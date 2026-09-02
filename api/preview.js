@@ -1,34 +1,53 @@
-export default async function handler(req, res){
-  res.setHeader('Access-Control-Allow-Origin','*');
-  res.setHeader('Content-Type','application/json');
-  try{
-    let url = (req.query.url||'').trim();
-    if(!url) return res.json({finalUrl:'', original:'', status:0, ssl:false, headers:{}, redirects:[], malwareSuspect:false, htmlPreview:''});
-    if(!url.startsWith('http')) url = 'https://' + url.replace(/^https?:\/\//,'');
+export default async function handler(req,res){
+ res.setHeader('Access-Control-Allow-Origin','*');
+ res.setHeader('Content-Type','application/json');
+ try{
+  let url=(req.query.url||'').trim();
+  if(!url) return res.json({error:'no url'});
+  if(!url.startsWith('http')) url='https://'+url;
 
-    const r = await fetch(url, {headers:{'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36','Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}, redirect:'follow'});
-    const html = await r.text();
+  let redirects=[];
+  let currentUrl=url;
+  let finalRes=null;
+  let html='';
 
-    return res.status(200).json({
-      original: req.query.url,
-      finalUrl: r.url,
-      status: r.status,
-      ssl: r.url.startsWith('https://'),
-      headers: Object.fromEntries(r.headers.entries()),
-      redirects: [],
-      malwareSuspect: html.toLowerCase().includes('eval(') || html.toLowerCase().includes('document.write(unescape'),
-      htmlPreview: html.slice(0,20000)
-    });
-  }catch(e){
-    return res.status(200).json({
-      original: req.query.url||'',
-      finalUrl: req.query.url||'',
-      status: 0,
-      ssl: false,
-      headers: {'x-error': e.message},
-      redirects: [],
-      malwareSuspect: false,
-      htmlPreview: `<div style="color:red;padding:20px"><h3>⚠️ Site Blocks Vercel</h3><p>${e.message}</p><p>Domain: ${req.query.url}</p><p>Try example.com / wikipedia.org for testing</p><p>If this is your site (karthick.com), turn off Cloudflare Bot Fight Mode</p></div>`
-    });
+  // Manual redirect trace (like previewer.to)
+  for(let i=0;i<10;i++){
+    try{
+      const r=await fetch(currentUrl,{method:'GET', headers:{'User-Agent':'Mozilla/5.0'}, redirect:'manual'});
+      redirects.push(currentUrl + ` [${r.status}]`);
+      if(r.status>=300 && r.status<400){
+        const loc=r.headers.get('location');
+        if(!loc) break;
+        currentUrl=loc.startsWith('http')?loc:new URL(loc, currentUrl).href;
+        continue;
+      } else {
+        finalRes=r;
+        html=await r.text();
+        break;
+      }
+    }catch(e){ redirects.push(currentUrl + ` [ERROR: ${e.message}]`); break; }
   }
+  if(!finalRes){
+    // fallback direct fetch
+    try{ const r=await fetch(url,{headers:{'User-Agent':'Mozilla/5.0'}}); finalRes=r; html=await r.text(); currentUrl=r.url; }catch(e){ html=`<h3>Blocked: ${e.message}</h3>`; }
+  }
+
+  const headers=finalRes?Object.fromEntries(finalRes.headers.entries()):{};
+  const isMalware=html.toLowerCase().includes('eval(') || html.toLowerCase().includes('atob(') || headers['x-phishing']=='1';
+
+  return res.json({
+    original:req.query.url,
+    finalUrl:finalRes?finalRes.url:currentUrl,
+    status:finalRes?finalRes.status:0,
+    ssl:(finalRes?finalRes.url:currentUrl).startsWith('https://'),
+    headers:headers,
+    redirects:redirects,
+    malwareSuspect:isMalware,
+    htmlPreview:html.slice(0,25000),
+    title:(html.match(/<title>(.*?)<\/title>/i)||['','N/A'])[1]
+  });
+ }catch(e){
+  return res.json({original:req.query.url, finalUrl:req.query.url, status:0, ssl:false, headers:{'x-error':e.message}, redirects:[req.query.url], malwareSuspect:false, htmlPreview:`Error: ${e.message}`});
+ }
 }
