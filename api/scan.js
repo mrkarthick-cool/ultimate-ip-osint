@@ -1,48 +1,40 @@
-export default async function handler(req, res) {
+// api/scan.js - FINAL FIXED VERSION
+module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Content-Type', 'application/json');
+
+  const targetUrl = req.query.url;
+  if (!targetUrl) {
+    return res.status(200).json({ status: 0, finalUrl: '', html: '', headers: {}, error: 'URL missing' });
+  }
+
+  let url = targetUrl.trim();
+  if (!url.startsWith('http')) url = 'https://' + url;
+
   try {
-    const urlQuery = req.query.url;
-    if (!urlQuery) {
-      return res.status(200).json({ error: "URL ivvu bro" });
-    }
-
-    let target = urlQuery.trim();
-    if (!target.startsWith('http://') &&!target.startsWith('https://')) {
-      target = 'https://' + target;
-    }
-
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
-
-    const response = await fetch(target, {
+    const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) OSINT',
-        'Accept': 'text/html'
-      },
-      signal: controller.signal,
-      redirect: 'follow'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Accept': 'text/html,application/xhtml+xml'
+      }
     });
-    clearTimeout(timeout);
 
     const html = await response.text();
-    const headers = {};
-    response.headers.forEach((v, k) => { headers[k] = v; });
-
+    
     return res.status(200).json({
-      finalUrl: response.url,
       status: response.status,
-      headers: headers,
-      html: html.slice(0, 80000)
+      finalUrl: response.url,
+      html: html.substring(0, 80000),
+      headers: Object.fromEntries(response.headers.entries())
     });
 
   } catch (err) {
-    // IMPORTANT: Error kuda JSON lone pampali, HTML kaadu
+    // CRASH AVVAKUNDA JSON NE PAMPALI - IDE KEY!
     return res.status(200).json({
-      error: false,
-      finalUrl: req.query.url,
       status: 0,
-      headers: { "x-error": err.message },
-      html: `<html><body><h1>Error: ${err.message}</h1><p>Site might be blocking Vercel. Try example.com</p></body></html>`
+      finalUrl: url,
+      html: `<html><body style="background:#111;color:white;padding:20px;font-family:monospace"><h2>⚠️ This site blocks Vercel</h2><p>Error: ${err.message}</p><p>Domain: ${url}</p><p>Try: example.com, wikipedia.org</p></body></html>`,
+      headers: { 'x-error': err.message }
     });
   }
-}
+};
