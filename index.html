@@ -30,8 +30,8 @@ a{color:#00d4ff;text-decoration:none}
   </a>
   <br> </p>
 <div class="searchbox">
-<input id="t" placeholder="Enter link - karthick.com / bit.ly/xyz / 8.8.8.8 or ip" value="karthick.com">
-<button onclick="go()">PREVIEW ⚡</button>
+<input id="t" placeholder="Enter link - karthick.com / bit.ly/xyz / 8.8.8.8 or ip" value="">
+<button onclick="go()">EnT3r ⚡</button>
 </div>
 </div>
 <div class="card"><div id="out"></div></div>
@@ -40,7 +40,7 @@ a{color:#00d4ff;text-decoration:none}
 async function go(){
 const v=document.getElementById('t').value.trim();
 const o=document.getElementById('out');
-if(!v){o.innerHTML='<div class=box>❌ Enter URL</div>';return}
+if(!v){o.innerHTML='<div class=box>❌ Please Enter URL</div>';return}
 o.innerHTML='<div class=box>⏳ Expanding & Tracing... Please wait 3 sec...</div>';
 const safeJson=async (u)=>{
  try{const r=await fetch(u);const t=await r.text();return JSON.parse(t);}catch(e){return {finalUrl:v,original:v,status:0,ssl:false,headers:{},redirects:[v],malwareSuspect:false,htmlPreview:'Error: '+e.message,target:v,location:'N/A',isp:'N/A',ip:'N/A',loc:'N/A'}}
