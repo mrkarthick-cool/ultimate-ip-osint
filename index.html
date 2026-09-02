@@ -1,27 +1,47 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OSINT V4 MAP</title><style>body{margin:0;background:#020617;color:#cbd5e1;font-family:monospace;padding:12px}.t{color:#00d9ff;text-align:center;font-size:26px;font-weight:800}.s{border:1.5px solid #00d9ff;border-radius:50px;display:flex;padding:5px;background:#0f172a;margin-top:10px}.s input{flex:1;background:transparent;border:0;padding:12px;color:white;outline:0}.s button{background:#00d9ff;border:0;border-radius:50px;padding:10px 20px;font-weight:800}.c{background:#0f172a;border:1px solid #1e293b;border-radius:16px;padding:14px;margin-top:12px}.b{background:#022c22;color:#22c55e;padding:3px 10px;border-radius:20px;font-size:12px}.r{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #111827;font-size:13px}.mapbtn{display:block;background:#00d9ff;color:#000;text-align:center;padding:12px;border-radius:12px;font-weight:800;text-decoration:none;margin-top:10px}</style></head><body>
-<div class="t">ULTIMATE OSINT</div><div class="s"><input id="u" placeholder="Enter domain - google.com"><button id="b">Go</button></div>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ULTIMATE IP OSINT</title><style>body{margin:0;background:#0a0e1a;color:#cbd5e1;font-family:Consolas,monospace;padding:14px}.box{max-width:420px;margin:0 auto;background:#12182b;border:1px solid #1e293b;border-radius:20px;padding:16px}.t{color:#38bdf8;text-align:center;font-size:28px;font-weight:800;letter-spacing:2px}.sub{color:#64748b;text-align:center;font-size:12px;margin:6px 0 14px}.inp{width:100%;background:#0a0e1a;border:1.5px solid #38bdf8;border-radius:12px;padding:14px;color:white;outline:0;font-size:15px;box-sizing:border-box}.btn{width:100%;background:#38bdf8;border:0;border-radius:12px;padding:14px;font-weight:800;font-size:15px;margin-top:10px;color:#000;cursor:pointer}.err{display:flex;align-items:center;gap:10px;background:#1a1111;border:1px solid #3f1a1a;border-radius:12px;padding:12px;margin-top:12px;color:#f87171;font-size:13px}.err b{color:white}.foot{margin-top:12px;border-top:1px solid #1e293b;padding-top:10px;text-align:center;color:#64748b;font-size:11px;line-height:1.6}.foot b{color:#38bdf8}.c{background:#0f172a;border:1px solid #1e293b;border-radius:16px;padding:14px;margin-top:12px}.b{ background:#022c22;color:#22c55e;padding:3px 10px;border-radius:20px;font-size:12px}.r{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #111827;font-size:13px}.mapbtn{display:block;background:#38bdf8;color:#000;text-align:center;padding:12px;border-radius:12px;font-weight:800;text-decoration:none;margin-top:10px}</style></head><body>
+<div class="box">
+<div class="t">ULTIMATE IP OSINT</div><div class="sub">Website IP • Phone IP • Domain</div>
+<input id="u" class="inp" placeholder="Google.com" value="Google.com">
+<button id="b" class="btn">⚡EnT3r</button>
+
+<!-- NUVVU ADIGINA ERROR BOX + FOOTER -->
+<div id="errBox" class="err" style="display:none"><span style="font-size:18px">❌</span><div><b>Please Enter url,</b><br>domain or ip address</div></div>
+
 <div id="res" style="display:none">
-<div class="c"><img id="p" style="width:100%;border-radius:12px;max-height:240px;object-fit:cover;border:1px solid #1e293b"><div style="margin-top:8px"><span class="b">Live Preview</span> <span id="dom" style="color:white;font-weight:bold;margin-left:8px"></span></div></div>
-<div class="c"><h3 style="color:#00d9ff;margin:0 0 8px 0;font-size:13px">TARGET - LIVE LOCATION & GEO</h3><div id="tb" style="line-height:1.8;font-size:13px"></div><a id="mapLink" class="mapbtn" target="_blank">Open in Google Maps 🗺️</a><a id="mapLink2" class="mapbtn" style="background:#0f172a;color:#00d9ff;border:1px solid #00d9ff" target="_blank">Open Street Map</a></div>
-<div class="c"><div class="r"><b>Domain:</b><span id="o"></span></div><div class="r"><b>IP:</b><span id="ip" style="color:#00d9ff"></span></div><div class="r"><b>City:</b><span id="city"></span></div><div class="r"><b>ISP:</b><span id="isp"></span></div><div class="r"><b>Timezone:</b><span id="tz"></span></div></div>
+<div class="c"><img id="p" style="width:100%;border-radius:12px;max-height:220px;object-fit:cover;border:1px solid #1e293b"><div style="margin-top:8px"><span class="b">Live Preview</span> <span id="dom" style="color:white;font-weight:bold;margin-left:8px"></span></div></div>
+<div class="c"><h3 style="color:#38bdf8;margin:0 0 8px 0;font-size:12px">TARGET - LIVE LOCATION & GEO</h3><div id="tb" style="line-height:1.8;font-size:13px"></div><a id="mapLink" class="mapbtn" target="_blank">Open in Google Maps 🗺️</a></div>
+<div class="c"><div class="r"><b>Domain:</b><span id="o"></span></div><div class="r"><b>IP:</b><span id="ip" style="color:#38bdf8"></span></div><div class="r"><b>City:</b><span id="city"></span></div><div class="r"><b>ISP:</b><span id="isp"></span></div></div>
+</div>
+
+<!-- FOOTER EXACT AS SCREENSHOT -->
+<div class="foot">
+<div><b>Web tool Dev: MrKarthickR</b></div>
+<div>Tg: @Drak24Evil | Insta: mr_rkarthik</div>
+<div>Team: Telugu Hackers Group</div>
+<div>Mail: cybercimeinvestigationagent@gmail.com</div>
+</div>
+
 </div>
 <script>
 document.getElementById("b").onclick=async function(){
-var i=document.getElementById("u").value.trim();if(!i)return;
+var i=document.getElementById("u").value.trim();
+var err=document.getElementById("errBox");
+var res=document.getElementById("res");
+if(!i){err.style.display="flex";res.style.display="none";return}
+err.style.display="none";
 var d=i.replace(/^https?:\/\//,"").split("/")[0];
 var fu=i.startsWith("http")?i:"https://"+d;
-document.getElementById("res").style.display="block";
+res.style.display="block";
 document.getElementById("dom").innerText=d;
 document.getElementById("o").innerText=d;
 document.getElementById("p").src="https://api.microlink.io/?url="+encodeURIComponent(fu)+"&screenshot=true&meta=false&embed=screenshot.url";
 var ip="-";try{var dn=await fetch("https://dns.google/resolve?name="+d);var dj=await dn.json();ip=dj.Answer?dj.Answer[0].data:"-";document.getElementById("ip").innerText=ip;
 if(/^[0-9]/.test(ip)){var r=await fetch("https://ipwho.is/"+ip);var j=await r.json();
-document.getElementById("tb").innerHTML="TARGET: "+d+"<br>Location: "+j.city+", "+j.region+", "+j.country_code+" "+(j.country_flag?j.country_flag:"")+"<br>Lat/Long: "+j.latitude+", "+j.longitude+"<br>ISP: "+(j.connection?j.connection.isp:j.isp)+"<br>Org: "+(j.connection?j.connection.org:"-")+"<br>Zip: "+(j.postal||"-");
+document.getElementById("tb").innerHTML="TARGET: "+d+"<br>Location: "+j.city+", "+j.region+", "+j.country_code+"<br>Lat/Long: "+j.latitude+", "+j.longitude+"<br>ISP: "+(j.connection?j.connection.isp:j.isp);
 document.getElementById("city").innerText=j.city+", "+j.country;
 document.getElementById("isp").innerText=j.connection?j.connection.isp:j.isp;
-document.getElementById("tz").innerText=j.timezone?j.timezone.id:"-";
 document.getElementById("mapLink").href="https://www.google.com/maps?q="+j.latitude+","+j.longitude;
-document.getElementById("mapLink2").href="https://www.openstreetmap.org/?mlat="+j.latitude+"&mlon="+j.longitude+"#map=12/"+j.latitude+"/"+j.longitude;
-}else{document.getElementById("tb").innerHTML="TARGET: "+d+"<br>IP: "+ip+" (CDN Protected)<br>Location: Cloudflare / Global";document.getElementById("mapLink").href="https://www.google.com/maps/search/"+d;document.getElementById("mapLink2").href="https://www.google.com/maps/search/"+d;}
-}catch(e){document.getElementById("tb").innerHTML="TARGET: "+d+"<br>IP: "+ip}}
+}else{document.getElementById("tb").innerHTML="TARGET: "+d+"<br>IP: "+ip+" (CDN)";document.getElementById("mapLink").href="https://www.google.com/maps/search/"+d;}
+}catch(e){}
+}
 </script></body></html>
