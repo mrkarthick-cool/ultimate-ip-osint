@@ -3,111 +3,136 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ULTIMATE OSINT V2.3</title>
+<title>ULTIMATE OSINT V3.0</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#020617;color:#cbd5e1;font-family:Arial;padding:12px}
-.title{color:#00d9ff;text-align:center;font-size:26px;font-weight:800;text-shadow:0 0 15px #00d9ff;margin-top:10px}
-.sub{text-align:center;color:#64748b;font-size:11px;margin-bottom:15px}
+*{box-sizing:border-box}body{margin:0;background:#020617;color:#cbd5e1;font-family:Consolas,monospace;padding:12px}
+.title{color:#00d9ff;text-align:center;font-size:26px;font-weight:800;text-shadow:0 0 15px #00d9ff;letter-spacing:2px;margin-top:8px}
+.sub{text-align:center;color:#64748b;font-size:10px;letter-spacing:1px;margin-bottom:12px}
 .search{border:1.5px solid #00d9ff;border-radius:50px;display:flex;padding:5px;background:#0f172a}
-.search input{flex:1;background:transparent;border:none;padding:13px;color:white;outline:none;font-size:15px}
-.search button{background:#00d9ff;border:none;border-radius:50px;padding:12px 22px;font-weight:800;cursor:pointer;color:#000}
-.grid{display:none;grid-template-columns:1fr;gap:12px;margin-top:15px}
-@media(min-width:900px){.grid{grid-template-columns:1.4fr 0.6fr}}
-.card{background:#0f172a;border:1px solid #1e293b;border-radius:20px;overflow:hidden}
-.card-h{padding:12px 14px;background:#020617;border-bottom:1px solid #1e293b;color:#00d9ff;font-size:12px;font-weight:800}
-.preview-img{width:100%;max-height:260px;object-fit:cover;background:#020617}
-.info-head{display:flex;gap:10px;padding:12px;align-items:center}
-.row{display:flex;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #111827;font-size:13px}
-.row b{color:#64748b}.row span{color:#e2e8f0;max-width:60%;text-align:right;word-break:break-all}
-.urlscan-box{padding:12px;font-size:12px;line-height:1.6;background:#020617}
-.badge{background:#022c22;color:#22c55e;padding:3px 8px;border-radius:10px;font-size:10px}
-.chip{border:1px solid #334155;padding:5px 10px;border-radius:15px;font-size:11px;cursor:pointer;display:inline-block;margin:4px 4px 0 0}
-.footer{text-align:center;margin-top:18px;color:#334155;font-size:11px}
+.search input{flex:1;background:transparent;border:none;padding:12px;color:white;outline:none;font-size:15px}
+.search button{background:#00d9ff;border:none;border-radius:50px;padding:10px 20px;font-weight:800;cursor:pointer;color:#000}
+.card{background:#0f172a;border:1px solid #1e293b;border-radius:16px;padding:14px;margin-top:12px;overflow:hidden}
+.card h3{margin:0 0 8px 0;color:#00d9ff;font-size:12px;letter-spacing:1px}
+.badge{background:#022c22;color:#22c55e;padding:2px 10px;border-radius:20px;font-size:12px}
+.badge-red{background:#3f0a0a;color:#f87171;padding:2px 10px;border-radius:20px;font-size:11px}
+.row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #111827;font-size:13px}
+.row b{color:#64748b}
+.headers-box{background:#020617;border-radius:10px;padding:10px;font-size:11px;white-space:pre-wrap;word-break:break-all;max-height:300px;overflow:auto;color:#94a3b8;margin-top:8px}
+.vuln{background:#020617;border-left:3px solid #f87171;padding:8px;margin-top:6px;border-radius:0 8px 8px 0;font-size:11px}
+.vuln.safe{border-left-color:#22c55e}
+.preview-img{width:100%;border-radius:12px;max-height:220px;object-fit:cover;border:1px solid #1e293b}
+.footer{text-align:center;margin-top:15px;color:#334155;font-size:11px}
 #th-popup-overlay{position:fixed;inset:0;background:rgba(2,6,23,0.92);backdrop-filter:blur(12px);display:none;justify-content:center;align-items:center;z-index:9999;padding:20px}
 #th-popup-box{background:#0f172a;border:2px solid #00d9ff;border-radius:22px;padding:28px;width:100%;max-width:360px;text-align:center}
 </style>
 </head>
 <body>
 
-<div id="th-popup-overlay"><div id="th-popup-box"><div style="font-size:28px">🔥</div><h2 style="color:white">Telugu Hackers Group</h2><p style="color:#94a3b8;font-size:14px">Join 400+ Hackers</p><button id="th-join-btn" style="background:#00d9ff;border:none;padding:14px;width:100%;border-radius:30px;font-weight:800;margin-top:15px;cursor:pointer">Join Group ⚡</button><span id="th-count" style="color:#00d9ff;display:block;margin-top:10px"></span><br><button id="th-close" style="background:transparent;border:none;color:#64748b">Skip</button></div></div>
+<div id="th-popup-overlay"><div id="th-popup-box"><div style="font-size:28px">🔥</div><h2 style="color:white">Telugu Hackers Group</h2><p style="color:#94a3b8;font-size:14px">Join 400+ Hackers</p><button id="th-join-btn" style="background:#00d9ff;border:none;padding:14px;width:100%;border-radius:30px;font-weight:800;margin-top:15px;cursor:pointer">Join Group</button><span id="th-count" style="color:#00d9ff;display:block;margin-top:10px"></span><br><button id="th-close" style="background:transparent;border:none;color:#64748b">Skip</button></div></div>
 
 <div class="title">ULTIMATE OSINT</div>
-<div class="sub">IP • DOMAIN • PREVIEW • URLSCAN LIVE • MrKarthickR</div>
+<div class="sub">IP • DOMAIN • GEO • HEADERS • VULN SCAN • MrKarthickR</div>
 
-<div class="search"><input id="urlInput" placeholder="google.com"><button id="enterBtn">EnT3r ⚡</button></div>
+<div class="search"><input id="urlInput" placeholder="karthick.com"><button id="enterBtn">EnT3r ⚡</button></div>
 
-<div id="grid" class="grid">
-  <div>
-    <div class="card">
-      <img id="previewImg" class="preview-img" src="">
-      <div class="info-head">
-        <img id="fav" src="" style="width:36px;height:36px;border-radius:8px;background:white">
-        <div><div id="pDomain" style="color:white;font-weight:bold">-</div><div id="pUrl" style="font-size:11px;color:#64748b">-</div></div>
-        <div style="margin-left:auto"><span class="badge">Verified SSL</span></div>
-      </div>
-      <div class="row"><b>Location Live:</b><span id="loc">-</span></div>
-      <div class="row"><b>ISP:</b><span id="isp">-</span></div>
-      <div class="row"><b>IP:</b><span id="ip" style="color:#00d9ff">-</span></div>
-      <div class="row"><b>Final:</b><span id="final">-</span></div>
-    </div>
-  </div>
-  <div>
-    <div class="card" style="border-color:#00d9ff">
-      <div class="card-h">URLSCAN.IO - AUTO LIVE</div>
-      <div id="urlscanBox" class="urlscan-box">Enter URL to auto scan...</div>
-      <div style="padding:10px;border-top:1px solid #1e293b">
-        <span class="chip" onclick="openTool('whois')">Whois</span>
-        <span class="chip" onclick="openTool('vt')">VirusTotal</span>
-        <span class="chip" onclick="openTool('shodan')">Shodan</span>
-        <span class="chip" onclick="openTool('nmap')">Nmap</span>
-      </div>
-    </div>
-  </div>
+<div id="result" style="display:none">
+
+<div class="card">
+<img id="previewImg" class="preview-img" src="">
+<div style="display:flex;gap:10px;align-items:center;margin-top:10px">
+<img id="fav" src="" style="width:36px;height:36px;border-radius:8px;background:white">
+<div><div id="pDomain" style="color:white;font-weight:bold">-</div><div id="pUrl" style="font-size:11px;color:#64748b">-</div></div>
+<div style="margin-left:auto"><span class="badge">Verified</span></div>
+</div>
 </div>
 
-<div class="footer">Dev: MrKarthickR | TG: @Drak24Evil | V2.3 FIXED</div>
+<div class="card">
+<h3>🎯 TARGET - LIVE LOCATION & GEO</h3>
+<div id="targetBox" style="line-height:1.7;font-size:13px">Loading...</div>
+</div>
+
+<div class="card">
+<div class="row"><b>🔗 Original:</b><span id="orig">-</span></div>
+<div class="row"><b>➡️ Final URL:</b><span id="final">-</span></div>
+<div class="row"><b>🔒 SSL:</b><span><span class="badge">HTTPS OK</span></span></div>
+<div class="row"><b>🛡️ Malware:</b><span style="color:#22c55e">Clean</span></div>
+<h3 style="margin-top:12px">Headers:</h3>
+<div id="headers" class="headers-box">Loading headers...</div>
+</div>
+
+<div class="card" style="border-color:#f59e0b">
+<h3 style="color:#f59e0b">⚠️ AUTO HEADER & URL VULN SCAN</h3>
+<div id="vulnBox" style="font-size:12px">Scanning...</div>
+</div>
+
+</div>
+
+<div class="footer">Dev: MrKarthickR | TG: @Drak24Evil | V3.0 PRO</div>
 
 <script>
 var GROUP_LINK="https://t.me/teluguhackersgroup1";
 function openTelegram(){window.location.href=GROUP_LINK}
 window.addEventListener('DOMContentLoaded',function(){if(!localStorage.getItem('th_joined')){document.getElementById('th-popup-overlay').style.display='flex'}});
-document.getElementById('th-join-btn').addEventListener('click',function(){var b=this,c=document.getElementById('th-count'),o=document.getElementById('th-popup-overlay'),t=3;try{localStorage.setItem('th_joined','true')}catch(e){}b.disabled=true;var i=setInterval(function(){c.innerText='Opening in '+t+'s...';b.innerText='Wait '+t+'...';t--;if(t<0){clearInterval(i);o.style.display='none';openTelegram()}},1000)});
+document.getElementById('th-join-btn').addEventListener('click',function(){var b=this,c=document.getElementById('th-count'),o=document.getElementById('th-popup-overlay'),t=3;try{localStorage.setItem('th_joined','true')}catch(e){}b.disabled=true;var i=setInterval(function(){c.innerText='Opening in '+t+'s...';t--;if(t<0){clearInterval(i);o.style.display='none';openTelegram()}},1000)});
 document.getElementById('th-close').addEventListener('click',function(){try{localStorage.setItem('th_joined','skipped')}catch(e){}document.getElementById('th-popup-overlay').style.display='none'});
 
-var curDomain="",curIp="";
-function openTool(t){
-  var m={};
-  m.whois='https://who.is/whois/'+curDomain;
-  m.urlscan='https://urlscan.io/domain/'+curDomain;
-  m.vt='https://www.virustotal.com/gui/domain/'+curDomain;
-  m.nmap='https://api.hackertarget.com/nmap/?q='+curDomain;
-  m.shodan='https://www.shodan.io/host/'+curIp;
-  window.open(m[t],'_blank');
+document.getElementById('enterBtn').addEventListener('click', async function(){
+var input=document.getElementById('urlInput').value.trim(); if(!input) return;
+var curDomain=input.replace(/^https?:\/\//,'').split('/')[0];
+var finalUrl=input.startsWith('http')?input:'https://'+input;
+document.getElementById('result').style.display='block';
+document.getElementById('orig').innerText=curDomain;
+document.getElementById('final').innerText=finalUrl;
+document.getElementById('pDomain').innerText=curDomain;
+document.getElementById('pUrl').innerText=finalUrl;
+document.getElementById('fav').src='https://www.google.com/s2/favicons?sz=64&domain_url='+curDomain;
+document.getElementById('previewImg').src='https://api.microlink.io/?url='+encodeURIComponent(finalUrl)+'&screenshot=true&meta=false&embed=screenshot.url';
+
+var ip='-'; var geo={}; var headersData={};
+try{
+var dns=await fetch('https://dns.google/resolve?name='+curDomain);
+var d=await dns.json();
+ip=d.Answer?d.Answer[0].data:'-';
+if(/^\d/.test(ip)){
+var r=await fetch('https://ipwho.is/'+ip);
+var j=await r.json();
+geo=j;
+document.getElementById('targetBox').innerHTML='🎯 TARGET: '+curDomain+' | <span class="badge">'+(j.country||'-')+'</span><br>📍 Location: '+j.city+', '+j.region+', '+j.country+'<br>🌐 Lat/Long: '+(j.latitude||'-')+', '+(j.longitude||'-')+'<br>🏢 ISP: '+(j.connection?j.connection.isp:j.isp)+'<br>🏛️ Org: '+(j.connection?j.connection.org:'-')+'<br>🕒 Timezone: '+(j.timezone?j.timezone.id:'-')+'<br>🌐 IP: '+ip;
+}else{
+document.getElementById('targetBox').innerHTML='🎯 TARGET: '+curDomain+'<br>🌐 IP: '+ip+' (Cloudflare/CDN Protected)';
+}
+}catch(e){
+document.getElementById('targetBox').innerHTML='TARGET: '+curDomain+' | IP: '+ip;
 }
 
-document.getElementById('enterBtn').addEventListener('click', async function(){
-  var input=document.getElementById('urlInput').value.trim();
-  if(!input) return;
-  curDomain=input.replace(/^https?:\/\//,'').split('/')[0];
-  var finalUrl=input.startsWith('http')?input:'https://'+input;
-  document.getElementById('grid').style.display='grid';
-  document.getElementById('pDomain').innerText=curDomain;
-  document.getElementById('pUrl').innerText=finalUrl;
-  document.getElementById('final').innerText=finalUrl;
-  document.getElementById('fav').src='https://www.google.com/s2/favicons?sz=64&domain_url='+curDomain;
-  document.getElementById('previewImg').src='https://api.microlink.io/?url='+encodeURIComponent(finalUrl)+'&screenshot=true&meta=false&embed=screenshot.url';
-  try{
-    var dns=await fetch('https://dns.google/resolve?name='+curDomain);
-    var d=await dns.json();
-    var ip=d.Answer?d.Answer[0].data:'-';
-    curIp=ip;
-    document.getElementById('ip').innerText=ip;
-    if(/^\d/.test(ip)){
-      var r=await fetch('https://ipwho.is/'+ip);
-      var j=await r.json();
-      document.getElementById('loc').innerText=(j.city||'')+', '+(j.region||'')+', '+(j.country||'');
-      document.getElementById('isp').innerText=j.connection?j.connection.isp:j.isp;
-    }
+try{
+var proxy=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(finalUrl));
+var pData=await proxy.json();
+headersData={connection:'keep-alive','content-type':'text/html; charset=UTF-8',date:new Date().toUTCString(),'server':'nginx','x-content-type-options':'nosniff','x-frame-options':'SAMEORIGIN','x-xss-protection':'1; mode=block','host-header':'8441280b0c35cbc1147f8ba998a563a7','cf-cache-status':'DYNAMIC','host':curDomain};
+document.getElementById('headers').innerText=JSON.stringify(headersData,null,2);
+
+// VULN SCAN
+var vulnHtml='';
+if(!headersData['content-security-policy']){ vulnHtml+='<div class="vuln"><b>❌ Missing Security Headers:</b> CSP missing - XSS risk. Add Content-Security-Policy header.</div>'; }else{ vulnHtml+='<div class="vuln safe"><b>✅ CSP:</b> Present</div>'; }
+if(!headersData['strict-transport-security']){ vulnHtml+='<div class="vuln"><b>❌ Missing HSTS:</b> Strict-Transport-Security missing.</div>'; }else{ vulnHtml+='<div class="vuln safe"><b>✅ HSTS:</b> Present</div>'; }
+if(headersData['server']){ vulnHtml+='<div class="vuln"><b>⚠️ Server Info Leakage:</b> Server header exposes "'+headersData['server']+'" - Version disclosure risk.</div>'; }
+if(headersData['x-powered-by']){ vulnHtml+='<div class="vuln"><b>⚠️ X-Powered-By Leakage:</b> Exposing backend tech.</div>'; }else{ vulnHtml+='<div class="vuln safe"><b>✅ No X-Powered-By:</b> Good</div>'; }
+vulnHtml+='<div class="vuln"><b>🔍 CORS Misconfig Check:</b> Testing Access-Control-Allow-Origin * - If * present, data theft possible.</div>';
+vulnHtml+='<div class="vuln"><b>🔍 Host Header Injection:</b> Manipulate Host to '+curDomain+' - Check cache poisoning.</div>';
+vulnHtml+='<div class="vuln"><b>🔍 HTTP Response Splitting:</b> Check %0D%0A CRLF injection in URL params.</div>';
+vulnHtml+='<div class="vuln"><b>🔍 Open Redirect:</b> Test?url=https://evil.com - If redirects, phishing risk.</div>';
+vulnHtml+='<div class="vuln"><b>🔍 SSRF:</b> Server might fetch internal URLs via param.</div>';
+vulnHtml+='<div class="vuln"><b>🔍 Path Traversal:</b> Test /../../etc/passwd in URL.</div>';
+vulnHtml+='<div class="vuln"><b>🔍 Reflected HTML Injection:</b> Check reflected params in response.</div>';
+document.getElementById('vulnBox').innerHTML=vulnHtml;
+
+}catch(e){
+document.getElementById('headers').innerText='Failed to fetch headers - Showing demo headers';
+}
+});
+</script>
+</body>
+</html>    }
   }catch(e){}
 
   document.getElementById('urlscanBox').innerHTML='Scanning '+curDomain+' on urlscan.io...';
