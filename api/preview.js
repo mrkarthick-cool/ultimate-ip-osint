@@ -1,40 +1,28 @@
-export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  const { url } = req.query;
-  if (!url) return res.status(400).json({ error: 'url required' });
-  let targetUrl = url.startsWith('http') ? url : `https://${url}`;
-  try {
+export default async function handler(req, res){
+  res.setHeader('Access-Control-Allow-Origin','*');
+  res.setHeader('Content-Type','application/json');
+  try{
+    let url = (req.query.url||'').trim();
+    if(!url) return res.json({error:'no url'});
+    if(!url.startsWith('http')) url = 'https://' + url;
+
+    const r = await fetch(url, {headers:{'User-Agent':'Mozilla/5.0'}, redirect:'follow'});
+    const html = await r.text();
+    const headers = Object.fromEntries(r.headers.entries());
     const redirects = [];
-    let currentUrl = targetUrl;
-    // Follow redirects manually 5 times
-    for(let i=0; i<5; i++){
-      const r = await fetch(currentUrl, { redirect: 'manual', headers: {'User-Agent':'Mozilla/5.0'} });
-      const loc = r.headers.get('location');
-      redirects.push({ url: currentUrl, status: r.status, headers: Object.fromEntries(r.headers.entries()) });
-      if(loc){
-        currentUrl = loc.startsWith('http') ? loc : new URL(loc, currentUrl).href;
-      } else {
-        break;
-      }
-    }
-    // Final fetch with content
-    const finalRes = await fetch(currentUrl, { headers: {'User-Agent':'Mozilla/5.0'} });
-    const html = await finalRes.text();
-    const title = html.match(/<title>(.*?)<\/title>/i)?.[1] || 'No Title';
-    const isMalware = /phish|malware|scam|fake login/i.test(html) || finalRes.url.includes('phishing');
-    
-    return res.json({
-      original: url,
-      finalUrl: currentUrl,
-      finalStatus: finalRes.status,
-      redirects,
-      title,
-      ssl: currentUrl.startsWith('https'),
-      malwareSuspect: isMalware,
-      htmlPreview: html.substring(0, 15000), // first 15k chars
-      headers: Object.fromEntries(finalRes.headers.entries())
+
+    return res.status(200).json({
+      original: req.query.url,
+      finalUrl: r.url,
+      status: r.status,
+      ssl: r.url.startsWith('https'),
+      headers: headers,
+      redirects: redirects,
+      malwareSuspect: html.includes('eval(') || html.includes('atob('),
+      htmlPreview: html.slice(0,20000),
+      html: html
     });
-  } catch(e){
-    return res.status(500).json({ error: e.message, original: url });
+  }catch(e){
+    return res.status(200).json({original:req.query.url, finalUrl:req.query.url, status:0, ssl:false, headers:{}, redirects:[], malwareSuspect:false, htmlPreview:`<h3>Blocked: ${e.message}. Try example.com</h3>`, html:`<h3>Error ${e.message}</h3>`});
   }
 }
