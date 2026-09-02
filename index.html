@@ -1,99 +1,64 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ULTIMATE OSINT - MrKarthickR</title>
+<title>ULTIMATE OSINT V2 - MrKarthickR</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{font-family:'Manrope',monospace}
-body{background:#070a12;color:#fff;margin:0;padding:0}
-.hero{background:radial-gradient(circle at top,#0a2a4a,#070a12);padding:30px 15px 40px;text-align:center}
-h1{font-size:42px;color:#00d4ff;text-shadow:0 0 20px #00d4ff;letter-spacing:3px;margin:10px}
-.hero p{color:#aaa;max-width:600px;margin:0 auto 20px}
-.searchbox{max-width:600px;margin:20px auto;background:#10182b;padding:8px;border-radius:50px;display:flex;border:1px solid #00d4ff;box-shadow:0 0 30px rgba(0,212,255,0.2)}
-.searchbox input{flex:1;background:transparent;border:none;color:#fff;padding:12px 20px;outline:none;font-size:16px}
-.searchbox button{background:#00d4ff;color:#000;border:none;padding:12px 25px;border-radius:40px;font-weight:bold;cursor:pointer}
+body{background:#070a12;color:#fff;margin:0}
+.hero{background:radial-gradient(circle at top,#0a2a4a,#070a12);padding:35px 15px;text-align:center}
+h1{font-size:40px;color:#00d4ff;text-shadow:0 0 20px #00d4ff;margin:0}
+.hero p{color:#aaa;max-width:600px;margin:10px auto 20px;font-size:13px}
+.searchbox{max-width:600px;margin:0 auto;background:#10182b;padding:6px;border-radius:50px;display:flex;border:1px solid #00d4ff;box-shadow:0 0 25px rgba(0,212,255,0.25)}
+.searchbox input{flex:1;background:transparent;border:none;color:#fff;padding:12px 20px;outline:none;font-size:15px}
+.searchbox button{background:#00d4ff;color:#000;border:none;padding:12px 28px;border-radius:40px;font-weight:bold;cursor:pointer}
 .card{max-width:900px;margin:20px auto;padding:0 15px}
-.box{background:#10182b;border:1px solid #1e3a5f;border-radius:16px;padding:16px;margin-top:15px;font-size:13px;word-break:break-all}
-.badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:bold}
-.ok{background:#003d1f;color:#00ff88}.bad{background:#3d0000;color:#ff4444}.warn{background:#3d2a00;color:#ffb800}
+.box{background:#10182b;border:1px solid #1e3a5f;border-radius:16px;padding:14px;margin-top:14px;font-size:12px;word-break:break-all}
+.badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:bold}
+.ok{background:#003d1f;color:#00ff88}.bad{background:#3d0000;color:#ff4444}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:600px){.grid{grid-template-columns:1fr}}
-iframe{width:100%;height:500px;border-radius:12px;border:none;background:#fff}
-.screenshot{width:100%;border-radius:12px;border:1px solid #333}
+@media(max-width:650px){.grid{grid-template-columns:1fr}}
+.screenshot{width:100%;border-radius:12px;border:1px solid #333;min-height:200px;background:#000}
 .footer{text-align:center;color:#555;padding:20px;font-size:11px}
-a{color:#00d4ff}
+a{color:#00d4ff;text-decoration:none}
 </style></head>
 <body>
 <div class="hero">
-<h1>ULTIMATE OSINT</h1>
-We preview all the world by expanding short URLs, scanning threats, and revealing real destinations to prevent phishing. Team <a href="https://t.me/teluguhackersgroup1" target="_blank" rel="noopener noreferrer"> Telugu Hacks Group </a> — Drak24Evil Admin
+<h1>ULTIMATE OSINT V2</h1>
+<p>Expand Short URLs • Preview Real Destination • Block Phishing • IP Trace • Inspired by Previewer.to</p>
 <div class="searchbox">
-<input id="t" placeholder="Enter link - google.com / bit.ly/xyz / 8.8.8.8" value="">
+<input id="t" placeholder="Enter link - karthick.com / bit.ly/xyz / 8.8.8.8" value="karthick.com">
 <button onclick="go()">PREVIEW ⚡</button>
 </div>
-<div style="color:#666;font-size:11px;margin-top:10px">IP • DOMAIN • REDIRECT CHAIN • SSL • MALWARE • SCREENSHOT • MrKarthickR</div>
 </div>
 <div class="card"><div id="out"></div></div>
-<div class="footer">Dev: <b style="color:#00d4ff">MrKarthickR</b> @Drak24Evil | Telugu Hackers Group | Clone of Previewer.to + OSINT Power</div>
-
+<div class="footer">Dev: <b style="color:#00d4ff">MrKarthickR</b> | Telugu Hackers Group</div>
 <script>
 async function go(){
 const v=document.getElementById('t').value.trim();
 const o=document.getElementById('out');
 if(!v){o.innerHTML='<div class=box>❌ Enter URL</div>';return}
-o.innerHTML='<div class=box>⏳ Expanding URL, Checking Redirects, Scanning Threats, Capturing Screenshot...</div>';
-
-const safeJson = async (url) => {
- const r=await fetch(url);
- const txt=await r.text();
- try{return JSON.parse(txt);}catch{return {error:txt.slice(0,500)}}
+o.innerHTML='<div class=box>⏳ Expanding & Tracing... Please wait 3 sec...</div>';
+const safeJson=async (u)=>{
+ try{const r=await fetch(u);const t=await r.text();return JSON.parse(t);}catch(e){return {finalUrl:v,original:v,status:0,ssl:false,headers:{},redirects:[v],malwareSuspect:false,htmlPreview:'Error: '+e.message,target:v,location:'N/A',isp:'N/A',ip:'N/A',loc:'N/A'}}
 };
-
 try{
-const [ip, pre] = await Promise.all([
+const [ip,pre]=await Promise.all([
  safeJson(`/api?key=THG-DEV-MrKarthickR-2026&target=${encodeURIComponent(v)}`),
  safeJson(`/api/preview?url=${encodeURIComponent(v)}`)
 ]);
-
-// Screenshot API - free
-const screenshotUrl = `https://api.microlink.io/?url=${encodeURIComponent(pre.finalUrl||v)}&screenshot=true&meta=false&embed=screenshot.url`;
-
-let redirectHtml = '';
-if(pre.redirects && pre.redirects.length>0){
- redirectHtml = pre.redirects.map((r,i)=>`${i+1}. → ${r}`).join('<br>');
-} else {
- redirectHtml = `1. ${pre.original||v}<br>2. → ${pre.finalUrl||v} <span class="badge ok">Final</span>`;
-}
-
+const finalUrl=pre.finalUrl||'https://'+v.replace(/^https?:\/\//,'');
+const shot=`https://image.thum.io/get/width/600/crop/800/noanimate/${finalUrl}`;
+const redirects=(pre.redirects||[]).map((r,i)=>`${i+1}. → ${r}`).join('<br>')||`1. ${v} → ${finalUrl}`;
 o.innerHTML=`
 <div class="grid">
- <div class="box">🎯 <b>TARGET:</b> ${ip.target||v}<br><br>
- 📍 <b>Location:</b> ${ip.location||'N/A'}<br>
- 🏢 <b>ISP:</b> ${ip.isp||'N/A'}<br>
- 🌐 <b>IP:</b> ${ip.ip||'N/A'}<br>
- <span class="badge ok">${ip.loc||'Unknown'}</span>
- </div>
- <div class="box">🔗 <b>Original:</b> ${pre.original||v}<br>
- ➡️ <b>Final URL:</b> <a href="${pre.finalUrl}" target="_blank">${pre.finalUrl||'N/A'}</a><br><br>
- 🔒 <b>SSL:</b> ${pre.ssl?'<span class=badge ok>HTTPS OK</span>':'<span class=badge bad>NO SSL</span>'}<br>
- 🛡️ <b>Malware:</b> ${pre.malwareSuspect?'<span class=badge bad>⚠️ SUSPECT</span>':'<span class=badge ok>Clean</span>'}<br>
- 📊 <b>Status:</b> ${pre.status||0}
- </div>
+<div class="box">🎯 <b>${ip.target||v}</b><br><br>📍 Location: ${ip.location||'N/A'}<br>🏢 ISP: ${ip.isp||'N/A'}<br>🌐 IP: ${ip.ip||'N/A'}<br><br><span class="badge ok">${ip.loc||'OK'}</span></div>
+<div class="box">🔗 Original: ${pre.original||v}<br>➡️ Final: <a href="${finalUrl}" target="_blank">${finalUrl}</a><br><br>🔒 SSL: ${pre.ssl?'<span class=badge ok>HTTPS</span>':'<span class=badge bad>NO SSL</span>'}<br>🛡️ Malware: ${pre.malwareSuspect?'<span class=badge bad>SUSPECT</span>':'<span class=badge ok>Clean</span>'}<br>📊 Status: ${pre.status||200}</div>
 </div>
-
-<div class="box">↪️ <b>Redirect Chain & Transparency (like Previewer.to):</b><br><br>${redirectHtml}
-<br><br><b>Headers:</b><br><div style="background:#000;padding:10px;border-radius:8px;font-size:10px;max-height:150px;overflow:auto">${JSON.stringify(pre.headers||{},null,2)}</div>
-</div>
-
+<div class="box">↪️ <b>Redirect Chain:</b><br><br>${redirects}<br><br><b>Headers:</b><div style="background:#000;padding:8px;border-radius:8px;max-height:120px;overflow:auto;font-size:10px">${JSON.stringify(pre.headers||{},null,2).substring(0,800)}</div></div>
 <div class="grid">
- <div class="box">📸 <b>Real Screenshot Preview (Anti-Phishing):</b><br>
- <img src="${screenshotUrl}" class="screenshot" onerror="this.src='https://via.placeholder.com/600x400?text=Screenshot+Blocked+by+Target'" loading="lazy">
- <br><br><a href="${pre.finalUrl}" target="_blank"><button style="width:100%;padding:10px;border-radius:8px;background:#00d4ff;border:none;font-weight:bold">🔗 Open Real Site</button></a>
- </div>
- <div class="box">👁️ <b>HTML Source Preview:</b><br>
- <div style="background:#000;color:#0f0;padding:10px;border-radius:8px;max-height:500px;overflow:auto;font-size:10px">${(pre.htmlPreview||'').replace(/</g,'&lt;').substring(0,8000)}</div>
- </div>
-</div>
-`;
+<div class="box">📸 <b>Live Screenshot (Phishing Protection):</b><br><img src="${shot}" class="screenshot" onerror="this.src='https://via.placeholder.com/600x400/10182b/00d4ff?text=Screenshot+Preview'"><br><br><a href="${finalUrl}" target="_blank"><button style="width:100%;padding:12px;border-radius:10px;background:#00d4ff;border:none;font-weight:bold">🔗 Open Real Site</button></a></div>
+<div class="box">👁️ <b>HTML Source:</b><div style="background:#000;color:#0f0;padding:10px;border-radius:8px;max-height:500px;overflow:auto;font-size:10px">${(pre.htmlPreview||'').replace(/</g,'&lt;').substring(0,8000)}</div></div>
+</div>`;
 }catch(e){o.innerHTML='<div class=box>❌ '+e.message+'</div>'}
 }
 go();
