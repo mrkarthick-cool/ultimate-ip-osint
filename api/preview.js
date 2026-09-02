@@ -6,7 +6,7 @@ export default async function handler(req, res){
     if(!url) return res.json({finalUrl:'', original:'', status:0, ssl:false, headers:{}, redirects:[], malwareSuspect:false, htmlPreview:''});
     if(!url.startsWith('http')) url = 'https://' + url.replace(/^https?:\/\//,'');
 
-    const r = await fetch(url, {headers:{'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}, redirect:'follow'});
+    const r = await fetch(url, {headers:{'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36','Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}, redirect:'follow'});
     const html = await r.text();
 
     return res.status(200).json({
