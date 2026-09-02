@@ -49,7 +49,7 @@ h1{margin-top:60px;font-size:26px;line-height:1.2}
     <p>Join 400+ Ethical Hackers<br>Daily Tools & Tricks</p>
     <button id="th-join-btn">Join Group ⚡</button>
     <span id="th-count"></span>
-    <br><button id="th-close"><p><b> <a href="https://t.me/teluguhackersgroup1">Skip for now ⏭️</a>  </p> </b> </button>
+    <br><button id="th-close">Skip for now</button>
   </div>
 </div>
 
@@ -57,56 +57,70 @@ h1{margin-top:60px;font-size:26px;line-height:1.2}
 <div class="sub">Expand Short URLs • Preview Real Destination • Block Phishing • IP Trace • 👨‍💻 Team Work</div>
 
 <div class="search-box">
-<input type="text" placeholder="Enter link - google.com / bit.ly/xyz">
-<button>EnT3r ⚡</button>
+<input type="text" id="urlInput" placeholder="Enter link - google.com / bit.ly/xyz">
+<button onclick="alert('Your OSINT logic here')">EnT3r ⚡</button>
 </div>
 
 <div class="error">❌ Please Enter URL</div>
 
-<div class="footer">👾 Dev: MrKarthickR | V3</div>
+<div class="footer">
+👾 Dev: <a href="#">MrKarthickR</a> | TG: <a href="#">@Drak24Evil</a> | V3.2 - Hacker Windows
+</div>
 
 <script>
-// 1. CHECK - User already joined chusaara?
-window.onload = function(){
-  let alreadyJoined = localStorage.getItem('th_joined');
-  if(!alreadyJoined){
-    document.getElementById('th-popup-overlay').style.display = 'flex';
-  }
+const GROUP_LINK = "https://t.me/TeluguHackersGroup"; // <-- NEE ORIGINAL LINK IKADA PETTU
+
+// FIXED OPEN FUNCTION - ALL BROWSER SUPPORT
+function openTelegramLink(){
+  // Method works even on file:// and old browsers
+  window.location.href = GROUP_LINK;
 }
 
-// 2. JOIN LOGIC - 3 Sec trick
+// ON LOAD - CHECK IF ALREADY JOINED
+window.addEventListener('DOMContentLoaded', function(){
+  let joined = localStorage.getItem('th_joined');
+  if(!joined){
+    document.getElementById('th-popup-overlay').style.display = 'flex';
+  }
+});
+
+// JOIN BUTTON - 3 SEC LOGIC
 document.getElementById('th-join-btn').addEventListener('click', function(){
   let btn = this;
   let countEl = document.getElementById('th-count');
   let overlay = document.getElementById('th-popup-overlay');
   let time = 3;
-  
-  // META DATA SAVE - ip base laga work avutundi
-  localStorage.setItem('th_joined', 'true');
-  localStorage.setItem('th_join_time', new Date().toISOString());
+
+  // SAVE META DATA - Malli popup raakudadu
+  try{
+    localStorage.setItem('th_joined', 'true');
+    localStorage.setItem('th_join_time', Date.now().toString());
+  }catch(e){}
 
   btn.disabled = true;
-  countEl.innerText = `Opening Telegram in ${time}s...`;
+  btn.style.opacity = "0.7";
   
-  let timer = setInterval(()=>{
+  countEl.innerText = "Opening Telegram in 3s...";
+  btn.innerText = "Wait 3...";
+
+  let timer = setInterval(function(){
     time--;
     if(time > 0){
-      countEl.innerText = `Redirecting in ${time}s...`;
-      btn.innerText = `${time}...`;
+      countEl.innerText = "Opening Telegram in " + time + "s...";
+      btn.innerText = "Wait " + time + "...";
     } else {
       clearInterval(timer);
+      countEl.innerText = "Redirecting...";
       overlay.style.display = 'none';
-      // NEE GROUP LINK
-      window.open("https://t.me/TeluguHackersGroup", "_blank");
-      // Optional: 1 sec tarvata home page refresh
-      setTimeout(()=>{ window.location.href = window.location.href; }, 500);
+      // DIRECT REDIRECT - NO POPUP BLOCK
+      openTelegramLink();
     }
-  },1000);
+  }, 1000);
 });
 
-// Skip button kuda save chestadi - malli popup radu
+// SKIP BUTTON
 document.getElementById('th-close').addEventListener('click', function(){
-  localStorage.setItem('th_joined', 'skipped');
+  try{ localStorage.setItem('th_joined', 'skipped'); }catch(e){}
   document.getElementById('th-popup-overlay').style.display='none';
 });
 </script>
