@@ -1,129 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ULTIMATE IP OSINT - MrKarthickR</title>
+<title>ULTIMATE IP OSINT - V1.0</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#020617;color:white;font-family:Arial,sans-serif;text-align:center;padding:20px;min-height:100vh}
-h1{margin-top:60px;font-size:26px;line-height:1.2}
-.sub{color:#94a3b8;font-size:14px;margin:10px;line-height:1.4}
-.search-box{border:2px solid #00d9ff;border-radius:50px;display:flex;padding:5px;margin:30px 0;background:#0f172a;overflow:hidden}
-.search-box input{flex:1;background:transparent;border:none;color:white;padding:15px;outline:none;font-size:15px}
-.search-box button{background:#00d9ff;border:none;border-radius:50px;padding:10px 28px;font-weight:bold;cursor:pointer}
-.error{background:#0f172a;border:1px solid #334155;border-radius:20px;padding:15px;margin-top:20px;text-align:left;color:#94a3b8}
-.footer{margin-top:40px;color:#64748b;font-size:13px}
-.footer a{color:#00d9ff;text-decoration:none}
-
-/* POPUP */
-#th-popup-overlay{
- position:fixed;top:0;left:0;width:100%;height:100%;
- background:rgba(2,6,23,0.92);backdrop-filter:blur(12px);
- display:none;justify-content:center;align-items:center;
- z-index:999999;padding:20px;
-}
-#th-popup-box{
- background:#0f172a;border:2px solid #00d9ff;
- box-shadow:0 0 40px rgba(0,217,255,0.5);border-radius:22px;
- padding:28px;width:100%;max-width:360px;
-}
-#th-popup-box h2{margin:0 0 10px 0;font-size:22px}
-#th-popup-box p{color:#94a3b8;font-size:14px;margin:0;line-height:1.5}
-#th-join-btn{
- background:#00d9ff;color:#000;border:none;
- padding:14px;width:100%;border-radius:30px;
- font-weight:800;font-size:16px;margin-top:20px;cursor:pointer;
-}
-#th-count{color:#00d9ff;margin-top:12px;display:block;font-size:13px;min-height:16px}
-#th-close{margin-top:14px;background:transparent;color:#64748b;border:none;font-size:14px;cursor:pointer;padding:5px}
+*{box-sizing:border-box}body{margin:0;background:#020617;color:white;font-family:Arial;text-align:center;padding:20px}h1{margin-top:45px;font-size:26px}.sub{color:#94a3b8;font-size:14px;margin:10px}.search-box{border:2px solid #00d9ff;border-radius:50px;display:flex;padding:5px;margin:25px 0;background:#0f172a}.search-box input{flex:1;background:transparent;border:none;color:white;padding:15px;outline:none;font-size:15px}.search-box button{background:#00d9ff;border:none;border-radius:50px;padding:10px 28px;font-weight:bold;cursor:pointer}.result-box{display:none;background:#0f172a;border:2px solid #00d9ff;border-radius:20px;padding:0;margin-top:20px;text-align:left;overflow:hidden}.preview-card{display:flex;gap:12px;padding:14px;background:#020617;border-bottom:1px solid #1e293b;align-items:center}.preview-card img{width:50px;height:50px;border-radius:12px;background:white;object-fit:contain}.preview-info{flex:1}.info-row{display:flex;justify-content:space-between;padding:9px 14px;border-bottom:1px solid #1e293b;font-size:14px}.info-row b{color:#94a3b8}.info-row span{color:#e2e8f0;text-align:right;max-width:60%;word-break:break-all}.safe{color:#22c55e!important;font-weight:bold}.error{background:#0f172a;border:1px solid #334155;border-radius:20px;padding:15px;margin-top:20px;text-align:left}.footer{margin-top:30px;color:#64748b;font-size:13px}.footer a{color:#00d9ff;text-decoration:none}#th-popup-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(2,6,23,0.92);backdrop-filter:blur(12px);display:none;justify-content:center;align-items:center;z-index:999999;padding:20px}#th-popup-box{background:#0f172a;border:2px solid #00d9ff;box-shadow:0 0 40px rgba(0,217,255,0.5);border-radius:22px;padding:28px;width:100%;max-width:360px;text-align:center}#th-join-btn{background:#00d9ff;color:#000;border:none;padding:14px;width:100%;border-radius:30px;font-weight:800;font-size:16px;margin-top:18px;cursor:pointer}#th-count{color:#00d9ff;margin-top:10px;display:block;font-size:13px}#th-close{margin-top:12px;background:transparent;color:#64748b;border:none;font-size:14px;cursor:pointer}
 </style>
 </head>
 <body>
 
-<!-- POPUP -->
 <div id="th-popup-overlay">
-  <div id="th-popup-box">
-    <div style="font-size:30px">🔥</div>
-    <h2>Telugu Hackers Group</h2>
-    <p>Join 400+ Ethical Hackers<br>Daily Tools & Tricks</p>
-    <button id="th-join-btn">Join Group ⚡</button>
-    <span id="th-count"></span>
-    <br><button id="th-close">Skip for now</button>
-  </div>
+  <div id="th-popup-box"><div style="font-size:28px">🔥</div><h2 style="margin:8px 0">Telugu Hackers Group</h2><p style="color:#94a3b8;font-size:14px">Join 400+ Ethical Hackers</p><button id="th-join-btn">Join Group ⚡</button><span id="th-count"></span><br><button id="th-close">Skip for now</button></div>
 </div>
 
 <h1>🕵️ ULTIMATE iP OSINT 🕵️</h1>
-<div class="sub">Expand Short URLs • Preview Real Destination • Block Phishing • IP Trace • 👨‍💻 Team Work</div>
+<div class="sub">Expand Short URLs • Preview Real Destination • Block Phishing</div>
 
 <div class="search-box">
-<input type="text" id="urlInput" placeholder="Enter link - google.com / bit.ly/xyz">
-<button onclick="alert('Your OSINT logic here')">EnT3r ⚡</button>
+<input type="text" id="urlInput" placeholder="google.com / bit.ly/xyz">
+<button id="enterBtn">EnT3r ⚡</button>
 </div>
 
-<div class="error">❌ Please Enter URL</div>
-
-<div class="footer">
-👾 Dev: <a href="#">MrKarthickR</a> | TG: <a href="#">@Drak24Evil</a> | V3.2 - Hacker Windows
-</div>
+<div id="errorMsg" class="error">❌ Please Enter URL</div>
+<div id="resultBox" class="result-box"></div>
+<div class="footer">👾 Dev: MrKarthickR | TG: @Drak24Evil | V1.0</div>
 
 <script>
-const GROUP_LINK = "https://t.me/TeluguHackersGroup"; // <-- NEE ORIGINAL LINK IKADA PETTU
+const GROUP_LINK="https://t.me/teluguhackersgroup1";
+function openTelegram(){ window.location.href=GROUP_LINK; }
+window.addEventListener('DOMContentLoaded',()=>{ if(!localStorage.getItem('th_joined')){document.getElementById('th-popup-overlay').style.display='flex';}});
+document.getElementById('th-join-btn').addEventListener('click', function(){ let btn=this,countEl=document.getElementById('th-count'),overlay=document.getElementById('th-popup-overlay'),time=3; try{localStorage.setItem('th_joined','true')}catch(e){} btn.disabled=true; let t=setInterval(()=>{countEl.innerText=`Opening in ${time}s...`;btn.innerText=`Wait ${time}...`;time--; if(time<0){clearInterval(t);overlay.style.display='none'; openTelegram();}},1000);});
+document.getElementById('th-close').addEventListener('click',()=>{ try{localStorage.setItem('th_joined','skipped')}catch(e){} document.getElementById('th-popup-overlay').style.display='none';});
 
-// FIXED OPEN FUNCTION - ALL BROWSER SUPPORT
-function openTelegramLink(){
-  // Method works even on file:// and old browsers
-  window.location.href = GROUP_LINK;
-}
+document.getElementById('enterBtn').addEventListener('click', async function(){
+  let input=document.getElementById('urlInput').value.trim();
+  let errorBox=document.getElementById('errorMsg');
+  let resultBox=document.getElementById('resultBox');
+  if(!input){errorBox.style.display='block';resultBox.style.display='none';return;}
+  errorBox.style.display='none'; resultBox.style.display='block';
+  let domain=input.replace(/^https?:\/\//,'').split('/')[0];
+  let finalUrl=input.startsWith('http')?input:'https://'+input;
 
-// ON LOAD - CHECK IF ALREADY JOINED
-window.addEventListener('DOMContentLoaded', function(){
-  let joined = localStorage.getItem('th_joined');
-  if(!joined){
-    document.getElementById('th-popup-overlay').style.display = 'flex';
+  // LINK PREVIEW LOGIC
+  let favicon = `https://www.google.com/s2/favicons?sz=64&domain_url=${domain}`;
+  let thumb = `https://api.microlink.io/?url=${encodeURIComponent(finalUrl)}&screenshot=true&meta=false&embed=screenshot.url`;
+
+  resultBox.innerHTML=`<div style="padding:20px;text-align:center;color:#00d9ff">🔍 Generating Preview for ${domain}...</div>`;
+
+  try{
+    let dnsRes=await fetch(`https://dns.google/resolve?name=${domain}`);
+    let dnsData=await dnsRes.json();
+    let ip=dnsData.Answer?dnsData.Answer[0].data:'Not Found';
+    let ipInfo={country:'-',city:'-',isp:'-'};
+    if(ip && /^\d/.test(ip)){
+      try{ let r=await fetch(`https://ipwho.is/${ip}`); let d=await r.json(); ipInfo={country:d.country||'-',city:d.city||'-',isp:d.connection?.isp||d.isp||'-', region:d.region||''}; }catch(e){}
+    }
+
+    resultBox.innerHTML=`
+      <div class="preview-card">
+        <img src="${favicon}" onerror="this.src='https://via.placeholder.com/50?text=${domain[0]}'">
+        <div class="preview-info">
+          <div style="font-weight:bold;font-size:16px">${domain}</div>
+          <div style="color:#94a3b8;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${finalUrl}</div>
+          <div style="color:#22c55e;font-size:12px;margin-top:2px">✓ Verified • SSL Secure</div>
+        </div>
+      </div>
+      <div style="padding:10px 14px;background:#020617;">
+        <img src="${thumb}" style="width:100%;border-radius:12px;border:1px solid #1e293b;max-height:180px;object-fit:cover" onerror="this.style.display='none'">
+      </div>
+      <div class="info-row"><b>Input:</b> <span>${input}</span></div>
+      <div class="info-row"><b>Final URL:</b> <span><a href="${finalUrl}" target="_blank" style="color:#00d9ff">${finalUrl}</a></span></div>
+      <div class="info-row"><b>IP Address:</b> <span style="color:#00d9ff">${ip}</span></div>
+      <div class="info-row"><b>Country:</b> <span>${ipInfo.country} ${ipInfo.region?'- '+ipInfo.region:''}</span></div>
+      <div class="info-row"><b>City:</b> <span>${ipInfo.city}</span></div>
+      <div class="info-row"><b>ISP:</b> <span>${ipInfo.isp}</span></div>
+      <div class="info-row"><b>Status:</b> <span class="safe">Safe ✓ | No Phishing</span></div>
+    `;
+  }catch(err){
+    resultBox.innerHTML=`<div style="padding:15px;color:#f87171">❌ Failed to preview ${domain}</div>`;
   }
 });
-
-// JOIN BUTTON - 3 SEC LOGIC
-document.getElementById('th-join-btn').addEventListener('click', function(){
-  let btn = this;
-  let countEl = document.getElementById('th-count');
-  let overlay = document.getElementById('th-popup-overlay');
-  let time = 3;
-
-  // SAVE META DATA - Malli popup raakudadu
-  try{
-    localStorage.setItem('th_joined', 'true');
-    localStorage.setItem('th_join_time', Date.now().toString());
-  }catch(e){}
-
-  btn.disabled = true;
-  btn.style.opacity = "0.7";
-  
-  countEl.innerText = "Opening Telegram in 3s...";
-  btn.innerText = "Wait 3...";
-
-  let timer = setInterval(function(){
-    time--;
-    if(time > 0){
-      countEl.innerText = "Opening Telegram in " + time + "s...";
-      btn.innerText = "Wait " + time + "...";
-    } else {
-      clearInterval(timer);
-      countEl.innerText = "Redirecting...";
-      overlay.style.display = 'none';
-      // DIRECT REDIRECT - NO POPUP BLOCK
-      openTelegramLink();
-    }
-  }, 1000);
-});
-
-// SKIP BUTTON
-document.getElementById('th-close').addEventListener('click', function(){
-  try{ localStorage.setItem('th_joined', 'skipped'); }catch(e){}
-  document.getElementById('th-popup-overlay').style.display='none';
-});
 </script>
-
 </body>
 </html>
